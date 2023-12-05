@@ -1,9 +1,6 @@
-usage: git [--version] [--help] [-C <path>] [-c <name>=<value>]
-           [--exec-path[=<path>]] [--html-path] [--man-path] [--info-path]
-           [-p | --paginate | -P | --no-pager] [--no-replace-objects] [--bare]
-           [--git-dir=<path>] [--work-tree=<path>] [--namespace=<name>]
-           [--super-prefix=<path>] [--config-env=<name>=<envvar>]
-           <command> [<args>]
+Sistema de Gestão de Bombas de Combustível e Fidelização de Clientes
+
+O Sistema de Gestão de Bombas de Combustível e Fidelização de Clientes é uma solução inovadora projetada para otimizar e aprimorar a operação de postos de combustíveis, proporcionando uma gestão eficiente das bombas de abastecimento e estabelecendo uma relação duradoura com os clientes.
 
 These are common Git commands used in various situations:
 
