@@ -1,6 +1,7 @@
+
 ## Sistema de Gestão de Bombas de Combustível e Fidelização de Clientes
 
-O Sistema de Gestão de Bombas de Combustível e Fidelização de Clientes é uma solução inovadora projectada para optimizar as operaç|oes de postos de abastecimento de combustíveis, proporcionando uma gestão eficiente das bombas de abastecimento e estabelecendo uma relação duradoura com os clientes.
+O Sistema de Gestão de Bombas de Combustível e Fidelização de Clientes é uma solução inovadora projetada para otimizar e aprimorar a operação de postos de combustíveis, proporcionando uma gestão eficiente das bombas de abastecimento e estabelecendo uma relação duradoura com os clientes.
 
 ## Funcionalidades:
 - Registo e Autenticação de Utilizadores;
