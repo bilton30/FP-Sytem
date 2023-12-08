@@ -1,0 +1,79 @@
+usuario{
+  email
+  nome
+  apelido
+  pass
+  contactos
+  endereco
+}
+
+empresas{
+  nome
+  logo,
+  email,
+  contact1
+  conatct2
+  userOwnerUID
+  endereco
+  nuit
+}
+
+sucursal{
+
+ nome
+ logo,
+ email,
+ contact1
+ conatct2
+ userOwnerUID
+ endereco
+ nuit
+ empresaUUID
+ localizacao_fisico:lon,lat
+sms_balance
+disconto_percentagem
+}
+
+dispositivos{
+ filial_UID
+ tipo 
+ nome,
+ makadress
+ ID,
+ arquitetura,
+ IDProcessador,
+ status,
+ data_instalacao
+tempo de inatividade
+}
+dispositivoslogs{
+  data_ultima request
+}
+plano {
+	id	
+	nome,
+	descricao
+}
+pacote{
+  name,
+  descricao,
+  preco
+}
+
+beneficios{
+nome,
+descricao
+}
+planoPacotebeneficio{
+planoID
+PacoteID
+beneficioID
+Preco
+}
+planoPacotebeneficio filial{
+  data inicio
+  data de fim
+  estado
+  sucursalUID
+  Pacote
+}

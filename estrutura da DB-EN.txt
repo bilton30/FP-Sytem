@@ -1,0 +1,83 @@
+User {
+  email
+  name
+  nickname
+  password
+  contacts
+  address
+}
+
+Companies {
+  name
+  logo
+  email
+  contact1
+  contact2
+  userOwnerUID
+  address
+  nuit
+}
+
+Branches {
+  name
+  logo
+  email
+  contact1
+  contact2
+  userOwnerUID
+  address
+  nuit
+  companyUUID
+  physical_location: lon, lat
+  sms_balance
+  discount_percentage
+}
+
+Devices {
+  branch_UID
+  type
+  name
+  mac_address
+  ID
+  architecture
+  processor_ID
+  status
+  installation_date
+  downtime
+}
+
+Device Logs {
+  last_request_date
+}
+
+Plan {
+  id
+  name
+  description
+}
+
+Package {
+  name
+  description
+  price
+}
+
+Benefits {
+  name
+  description
+}
+
+Plan Package Benefit {
+  planID
+  packageID
+  benefitID
+  Price
+}
+
+Branch Plan Package Benefit {
+  start_date
+  end_date
+  status
+  branchUID
+  Package
+}
