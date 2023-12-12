@@ -2,7 +2,7 @@ export default  [
     {
         name: "Dashboard",
         icon: "dashboard",
-        redirect: { name: "home" },
+        redirect:  "home",
         roles: "home-index"
     },
 
@@ -16,14 +16,14 @@ export default  [
                 name: "Users",
                 icon: "group",
                 color: 'text-teal',
-                redirect: { name: "users" },
+                redirect: "users" ,
                 roles: "admin-users-index"
             },
             {
                 name: "Roles",
                 icon: "badge",
                 color: 'text-orange',
-                redirect: { name: "roles" },
+                redirect: "roles" ,
                 roles: "admin-roles-index"
             }
         ]

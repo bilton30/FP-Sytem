@@ -9,7 +9,7 @@ use App\Repositories\companyRepository;
 use Illuminate\Http\Request;
 use Flash;
 
-class companyController extends AppBaseController
+class CompanyController extends AppBaseController
 {
     /** @var companyRepository $companyRepository*/
     private $companyRepository;

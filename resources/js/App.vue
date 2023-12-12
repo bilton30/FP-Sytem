@@ -88,12 +88,13 @@
         <q-scroll-area class="fit">
           <q-list padding >
             <q-item>
+           
               <q-btn :rounded="!miniState" :round="miniState" icon="add" color="white"   :class="$q.dark.isActive ? 'text-grey-8' : ' text-grey-8 '"  
                      :label="miniState?'':'Nova venda'"></q-btn>
             </q-item>
             <div v-for="item in items" :key="item.name">
               <q-separator inset class="q-my-sm" v-if="item.name=='Admin'"/>
-              <q-item  v-ripple  v-if=" item.childrens == undefined" clickable>
+              <q-item  v-ripple  v-if=" item.childrens == undefined" clickable  :href="item.redirect">
               <q-item-section avatar>
                 <q-icon :name="item.icon"   :class="item.color" />
               </q-item-section>
@@ -101,7 +102,7 @@
                 <q-item-label>{{ item.name }}</q-item-label>
               </q-item-section>
             </q-item>
-  
+      
               <q-expansion-item
               :icon="item.icon"
               :label="item.name"
@@ -109,7 +110,7 @@
               v-if="item.childrens"
               >
             <q-list class="q-pl-lg"    v-for="children in item.childrens" :key="children.name" >
-              <q-item to="/Map" active-class="q-item-no-link-highlighting"  v-ripple >
+              <q-item  active-class="q-item-no-link-highlighting"  clickable :href="children.redirect"  v-ripple >
                 <q-item-section avatar>
                   <q-icon :name="children.icon" :class="children.color" />
                 </q-item-section>
@@ -143,7 +144,7 @@
   
   <script>
   import {fasGlobeAmericas, fasFlask} from '@quasar/extras/fontawesome-v5'
-  
+  import { Link } from '@inertiajs/vue3'
   import menuList from "@/services/menu.js";
   import {defineComponent} from 'vue'
   import {ref} from 'vue'
@@ -157,6 +158,7 @@
     name: 'App',
     components: {
       rightBar,
+      Link,
       Notifications
     },
     data () {

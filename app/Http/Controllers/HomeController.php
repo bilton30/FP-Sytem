@@ -24,40 +24,37 @@ class HomeController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index(){
-        $data = payment_type::withCount('payment')
-       ->withSum('payment', 'total')
-       ->get();
-        $sumServicePayments = payment::whereNotNull('payment_service_uid')->sum('total');
-        $sumProductPayments = payment::whereNotNull('payment_product_uid')->sum('total');
-        $sumWaterPayments = payment::whereNotNull('payment_water_uid')->sum('total');
+        $data = [];
+    //     payment_type::withCount('payment')
+    //    ->withSum('payment', 'total')
+    //    ->get();
+        $sumServicePayments = 0;
+        $sumProductPayments = 0;
+        $sumWaterPayments = 0;
         return Inertia::render('home',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));
     }
 
     public function cashier()
     {
         //    $data = payment::withCount('payment_type')->get();
-        $data = payment_type::withCount('payment')
-       ->withSum('payment', 'total')
-       ->get();
-        $sumServicePayments = payment::whereNotNull('payment_service_uid')->sum('total');
-        $sumProductPayments = payment::whereNotNull('payment_product_uid')->sum('total');
-        $sumWaterPayments = payment::whereNotNull('payment_water_uid')->sum('total');
-         
+        $data = [];
+        $sumServicePayments = 0;
+        $sumProductPayments = 0;
+        $sumWaterPayments = 0;         
         
         // payment_type
         // return view('home');
         return view('site.report.cashier',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));
     }
     public function api(){
-        return address_province::with("districts.neighborhoods")->get();
+        return [];
     }
 
     public function transactions(){
-        $data = payment::has('payment_type')->has('customers')->get();
-         $sumServicePayments = payment::whereNotNull('payment_service_uid')->sum('total');
-         $sumProductPayments = payment::whereNotNull('payment_product_uid')->sum('total');
-         $sumWaterPayments = payment::whereNotNull('payment_water_uid')->sum('total');
-          
+        $data = [];
+         $sumServicePayments = 0;
+         $sumProductPayments = 0;
+         $sumWaterPayments = 0  ;        
          // payment_type
          // return view('home');
          return view('site.report.transactions',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));

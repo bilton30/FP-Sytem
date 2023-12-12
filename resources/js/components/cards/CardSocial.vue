@@ -6,7 +6,7 @@
         <div class="row q-col-gutter-md">
           <div class="col-md-9">
             <div class="row no-wrap">
-              <div v-for="(item, index) in items" :key="index" class="col-md-3  ">
+              <!-- <div v-for="(item, index) in items" :key="index" class="col-md-3  ">
                 <q-item :style="`background-color: ${item.color1}; margin: 10px;`" class="q-pa-none">
                   <q-item-section v-if="icon_position === 'left'" side :style="`background-color: ${item.color2}`"
                                   class="q-pa-lg q-mr-none text-white">
@@ -20,7 +20,7 @@
                     <q-icon :name="item.icon" color="white" size="40px"></q-icon>
                   </q-item-section>
                 </q-item>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
