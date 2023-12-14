@@ -8,10 +8,14 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
     plugins: [
-        laravel([
+        laravel({input:[
             'resources/css/app.css',
+            'resources/sass/app.scss',
+            'resources/sass/default.scss',
             'resources/js/app.js',
-        ]),
+        ],
+         refresh: true,
+}),
         
         // react(),
         vue({
