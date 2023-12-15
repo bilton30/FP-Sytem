@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,26 +14,8 @@ use App\Http\Controllers\HomeController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/clear', function() {
-    Artisan::call('optimize:clear');
-    return redirect()->back();
-});
 
-Route::middleware('londlord')->group(function() {
-    // Route::get('/', [HomeController::class, 'index']);
-
-});
-// Auth::routes([
-//     'register' => false, // Registration Routes...
-//     'reset' => false, // Password Reset Routes...
-//     'verify' => false, // Email Verification Routes...
-//   ]);
- Auth::routes();
-Route::middleware(['tenant','auth'])->group(function() {
-
-    // Route::get('/profile', [HomeController::class, 'index']);
-
-    Route::get('/', function () {
+ Route::get('/', function () {
         if(Auth::check()) {
             return redirect('/home');
         } else {
@@ -40,18 +23,63 @@ Route::middleware(['tenant','auth'])->group(function() {
         }
     });
 
+Route::get('/clear', function() {
+    Artisan::call('optimize:clear');
+    return redirect()->back();
+});
+/*The Email Verification Notice*/
+Route::get('/email/verify', function () {
+    return view('auth.verify');
+
+})->middleware('auth')->name('verification.notice');
+
+ /*The Email Verification Handler*/
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect('/home');
+
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+/*Resending The Verification Email*/
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
+
+Auth::routes();
+
+/*multitenancy routes*/
+ Route::get('/home', [HomeController::class, 'index'])->middleware('auth');
+
+Route::middleware(['auth'])->group(function() {
+   
+   
+
+});
+
+Route::middleware(['tenant'])->group(function() {
+
+// Auth::routes([
+//     'register' => false, // Registration Routes...
+//     'reset' => false, // Password Reset Routes...
+//     'verify' => false, // Email Verification Routes...
+//   ]);
+    // Route::get('/profile', [HomeController::class, 'index']);
+
 Route::post('custom-update', [App\Http\Controllers\UserController::class,'customUpdate'])->name('custom-update');
 
 Route::get('/transactions', [App\Http\Controllers\HomeController::class, 'transactions'])->name('transactions');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
 Route::get('/cashir', [App\Http\Controllers\HomeController::class, 'cashier'])->name('cashier');
 
 
 Route::resource('users', App\Http\Controllers\UserController::class);
 
 
-Route::resource('address_districts', App\Http\Controllers\address_districtController::class);
-Route::resource('address_provinces', App\Http\Controllers\address_provinceController::class);
+// Route::resource('address_districts', App\Http\Controllers\address_districtController::class);
+// Route::resource('address_provinces', App\Http\Controllers\address_provinceController::class);
 // Route::resource('address_neighborhoods', App\Http\Controllers\address_neighborhoodController::class);
 // Route::resource('companies', App\Http\Controllers\companyController::class);
 // Route::resource('customers', App\Http\Controllers\customerController::class);

@@ -7,12 +7,9 @@ use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 
-class PermissionGeneratorController extends Controller
+trait PermissionGeneratorController 
 {
-    public $ignore_classes;
-    public function __construct()
-    {
-        $this->ignore_classes = [
+    public $ignore_classes = [
             'AppBaseController',
             'Controller',
             'PermissionGeneratorController',
@@ -20,7 +17,7 @@ class PermissionGeneratorController extends Controller
             'CustomTenantFinder',
             'ResolverController'
         ];
-    }
+
     public function synchronizelPermission()
     {
         if ($this->allPermission()) {
@@ -89,13 +86,14 @@ class PermissionGeneratorController extends Controller
                     ) {
                         $class_name = str_replace('Controller', '', $class);
                         // echo $class_name . '-' . $method_name . "\n";
-                        $permission_name = str_replace('Controler', '', $class_name . '-' . $method_name);
+                        $permission_name = str_replace('Controller', '', $class_name . '-' . $method_name);
                         $permission_name = str_replace('\\', '-', $permission_name);
                         // dd($permission_name);
+                        $guard_name = str_starts_with(Str::lower($permission_name), 'api') ? 'api' : 'web';
                         if (!Permission::where('name', $permission_name)->first()) {
                             $permission = Permission::create([
                                 'name' => Str::lower($permission_name),
-                                'guard_name' => 'web',
+                                'guard_name' =>$guard_name,
                             ]);
                             if ($permission) {
                                 $status = true;
@@ -113,14 +111,20 @@ class PermissionGeneratorController extends Controller
 
     public function get_this_class_methods($class)
     {
-        $array1 = get_class_methods($class);
-        if ($parent_class = get_parent_class($class)) {
-            $array2 = get_class_methods($parent_class);
-            $array3 = array_diff($array1, $array2);
-        } else {
-            $array3 = $array1;
-        }
+        if (class_exists($class)) {
+                $array1 = get_class_methods($class);
 
-        return $array3;
+                if ($parent_class = get_parent_class($class)) {
+                    $array2 = get_class_methods($parent_class);
+                    $array3 = array_diff($array1, $array2);
+                } else {
+                    $array3 = $array1;
+                }
+
+                return $array3;
+            } else {
+                // Lida com o caso em que a classe não existe
+                return [];
+            }
     }
 }

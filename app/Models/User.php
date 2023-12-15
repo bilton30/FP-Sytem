@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
-
-class User extends Authenticatable
+use App\Models\Traits\MultitenancyConnection;
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasRoles, HasApiTokens,HasUuids,HasFactory,UsesTenantConnection, Notifiable;
+    use HasRoles, HasApiTokens,HasUuids,HasFactory,MultitenancyConnection, Notifiable;
 
     /**
      * The attributes that are mass assignable.

@@ -70,7 +70,7 @@
                     </div>
                     <div class="signup-image" >
                         <figure><img src="{{ asset('assets/images/7wec_s1wt_220517.jpg') }}" alt="sing up image"></figure>
-                        <a href="#" class="signup-image-link">I already have an account</a>
+                        <a href="/login" class="signup-image-link">I already have an account</a>
                     </div>
                 </div>
             </div>
