@@ -7,10 +7,12 @@ use App\Models\payment_type;
 use App\Models\payment;
 use Inertia\Inertia;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Auth;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\PermissionGeneratorController;
 class HomeController extends Controller
-{ use PermissionGeneratorController;
+{
     /**
      * Create a new controller instance.
      *
@@ -30,16 +32,35 @@ class HomeController extends Controller
      
     public function index(){
              
-        $this->synchronizelPermission();
-        $user = Auth::user();
-// $user->assignRole('writer');
-     return$user->hasRole('writer');
-  return$user->hasAnyRole('writer', 'reader');
-    //    return auth()->user()->hasAnyRole(['sss']);
+//         $user = Auth::user();
+// // $user->assignRole('writer');
+// //  $databaseName = 'seu_nome_de_banco1';
+// //  Artisan::call('migrate', array('--path' => 'app/migrations', '--force' => true,'--database' => 'seu_nome_de_banco1'));
+// //         // // Execute uma consulta SQL para criar o banco de dados
+// //         // $resultado = DB::statement("CREATE DATABASE IF NOT EXISTS $databaseName");
+
+// //         // if ($resultado) {
+// //         //    Artisan::call('migrate', array('--path' => 'app/migrations', '--force' => true));
+// //         //     return "Banco de dados criado com sucesso!";
+// //         // } else {
+// //         //     return "Falha ao criar o banco de dados.";
+// //         // }
+// // return ;
+//     if($user->hasAnyRole(['Company','Admin'])){
+//         if($user->hasRole('Company')){
+//              return "  Company";
+//         }
+    
+//     }else{
+//       return redirect()->route('company.setup');
+//     }
+        $data=[];
+         return Inertia::render('setup/report',compact("data"));
+//     //    return auth()->user()->hasAnyRole(['sss']);
         $data = [];
-    //     payment_type::withCount('payment')
-    //    ->withSum('payment', 'total')
-    //    ->get();
+//     //     payment_type::withCount('payment')
+//     //    ->withSum('payment', 'total')
+//     //    ->get();
         $sumServicePayments = 0;
         $sumProductPayments = 0;
         $sumWaterPayments = 0;

@@ -55,7 +55,8 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function() {
    
-   
+Route::get('/company/setup', [App\Http\Controllers\CampanyController::class, 'setup'])->name('company.setup');
+// Route::resource('company', App\Http\Controllers\CampanyController::class);
 
 });
 
