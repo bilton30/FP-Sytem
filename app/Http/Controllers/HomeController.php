@@ -55,8 +55,7 @@ class HomeController extends Controller
 //       return redirect()->route('company.setup');
 //     }
         $data=[];
-         return Inertia::render('setup/report',compact("data"));
-//     //    return auth()->user()->hasAnyRole(['sss']);
+
         $data = [];
 //     //     payment_type::withCount('payment')
 //     //    ->withSum('payment', 'total')

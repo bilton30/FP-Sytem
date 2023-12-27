@@ -16,6 +16,7 @@ import 'quasar/src/css/index.sass'
 // import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 
 
+
 createInertiaApp({
   resolve: name => {
     const pages = import.meta.glob('./pages/**/*.vue', { eager: true })
