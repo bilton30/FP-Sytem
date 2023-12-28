@@ -2,43 +2,29 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Traits\MultitenancyConnection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Traits\MultitenancyConnection;
-class Company extends Model
+class Branch extends Model
 {
-    use SoftDeletes, HasUuids, MultitenancyConnection;
-    
+    use SoftDeletes, HasUuids,HasFactory,MultitenancyConnection;
+
     public $incrementing = false;
 
     protected $keyType = 'string';
 
-    public $table = 'companies';
-    
-    protected $dates = ['server_created_at']; // Para tratar o campo como uma data do Carbon
-    
-    // Defina o evento de criação
-    protected static function boot()
-    {
-        parent::boot();
-
-        // static::creating(function ($model) {
-        //     $model->server_created_at = now();
-        // });
-    }
     public $fillable = [
         'name',
         'email',
-        'website',
+        'logo',
         'nuit',
         'contact1',
         'contact2',
-        'prefix',
         'address',
-        'status',
-        'userOwnerUID',
         'id',
+        'company_id',
         'app_uid',
         'sync_uid',
         'sync_at',
@@ -63,7 +49,7 @@ class Company extends Model
     public static array $rules = [
         'name' => 'required',
         'email' => 'email',
-        'website' => 'required',
+
         'nuit' => 'required',
         // 'prefix' => 'required',
         // 'uid' => 'required'  'app_uid' => 'string',
@@ -73,10 +59,4 @@ class Company extends Model
         'updated_user_uid' => 'string',
         'deleted_user_uid' => 'string'
     ];
-    
-    // public function invoice_contacts()
-    // {
-    //     return $this->hasMany(invoice_contacts::class,"company_uid");
-    // }
- 
 }

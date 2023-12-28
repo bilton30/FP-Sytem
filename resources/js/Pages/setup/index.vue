@@ -41,38 +41,53 @@
                                 <img src="/images/Fill-out-amico.png" alt="">
                             </figure>
                             <div class="fieldset-content">
-                                <label class="form-label">manually enter the company's identification data below.</label>
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <input type="text" name="name" id="name" v-model="form.name"  placeholder="company Name" />
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="text" name="nuit" v-model="form.nuit"  id="nuit" placeholder="Nuit" />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" name="email"  v-model="form.email"  id="email" placeholder="Email" />
-                                </div>
-                                <div class="form-group">
 
-                                    <input type="file" id="file-input"  name="file-input"   accept="image/*" />
-
-                                    <label id="file-input-label" for="file-input">Select the company logo file</label>
-                                </div>
-
-                                <div class="form-row">
-                                    <div class="form-group">
-                                        <input type="text" name="contact1"  v-model="form.contact1"  id="contact1" placeholder="Phone number" />
+                                <div style="margin-right: 10px;">
+                                    <label class="form-label">manually enter the company's identification data
+                                        below.</label>
+                                    <div class="alert alert-danger" v-if="errors.length" role="alert">
+                                        <b>Please correct the following error(s):</b>
+                                        <ul class="alert-ul">
+                                            <li v-for="error in errors" key="error">{{ replacePoints(error) }}</li>
+                                        </ul>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <input type="text" name="name" id="name" v-model="form.name"
+                                                placeholder="company Name" @input="removeErrorMessage('name')" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="nuit" v-model="form.nuit" id="nuit"
+                                                @input="removeErrorMessage('nuit')" placeholder="Nuit" />
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="contact2" id="contact2"  v-model="form.contact2" 
-                                            placeholder="Alternative Phone number" />
+                                        <input type="email" name="email" v-model="form.email" id="email"
+                                            @input="removeErrorMessage('email')" placeholder="Email" />
+                                    </div>
+                                    <div class="form-group">
+
+                                        <input type="file" id="file-input" name="file-input" accept="image/*" />
+
+                                        <label id="file-input-label" for="file-input">Select the company logo file</label>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group">
+                                            <input type="text" name="contact1" v-model="form.contact1" id="contact1"
+                                                @input="removeErrorMessage('contact1')" placeholder="Phone number" />
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" name="contact2" id="contact2" v-model="form.contact2"
+                                                @input="removeErrorMessage('contact2')"
+                                                placeholder="Alternative Phone number" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" name="address " id="address " v-model="form.address"
+                                            @input="removeErrorMessage('address')" placeholder="address" />
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="text" name="address " id="address "   v-model="form.address" placeholder="address" />
-                                </div>
-                               
                             </div>
                         </div>
                     </fieldset>
@@ -100,7 +115,7 @@
                                     </div>
                                     <label for="branch">No</label>
                                     <div class="form-radio">
-                                        <input type="radio" id="branch" name="branch" v-model="form.haveBranch"  
+                                        <input type="radio" id="branch" name="branch" v-model="form.haveBranch"
                                             value="0" /><label for="branch" title="Rocks!"></label>
                                     </div>
                                 </div>
@@ -130,26 +145,36 @@
                         <div class="fieldset-flex">
                             <figure>
                                 <img src="/images/branch.png" alt="">
-                            </figure>{{ form.branch.length  }}
+                            </figure>
 
-                            <div class="fieldset-content" v-if="form.branch.length > 0">
+                            <div class="fieldset-content" v-if="form.branch.length == form.branchNumber">
                                 <label class="form-label">Enter the identification details for all branches or
                                     subsidiaries.</label>
-                                <div v-for="index in form.branchNumber" :key="index">
+                                <div class="alert alert-danger" v-if="errors.length" role="alert">
+                                    <b>Please correct the following error(s):</b>
+                                    <ul class="alert-ul">
+                                        <li v-for="error in errors" key="error">{{ replacePoints(error) }}</li>
+                                    </ul>
+                                </div>
+                                <div v-for="index in form.branchNumber" :key="index" style="margin-right: 10px;">
 
-                                    <div class="form-group" style=" font-size: 22px;" >
-                                        <label for="rating_quanlity" >Branch {{ index }} Registration Form.</label>
+                                    <div class="form-group" style=" font-size: 22px;" v-if="form.branch.length > 1">
+                                        <label for="rating_quanlity">Branch {{ index }} Registration Form.</label>
                                     </div>
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <input type="text" name="name" v-model="form.branch[index-1].name"  id="name" placeholder="Company Name" />
+                                            <input type="text" name="name" v-model="form.branch[index - 1].name"
+                                                @input="callRemoveErrorMessage(index - 1, 'name')"
+                                                placeholder="Company Name" />
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="nuit" v-model="form.branch[index-1].nuit" id="nuit" placeholder="Nuit" />
+                                            <input type="text" name="nuit" v-model="form.branch[index - 1].nuit" id="nuit"
+                                                @input="callRemoveErrorMessage(index - 1, 'nuit')" placeholder="Nuit" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="email" name="email" v-model="form.branch[index-1].email" id="email" placeholder="Email" />
+                                        <input type="email" name="email" v-model="form.branch[index - 1].email" id="email"
+                                            @input="callRemoveErrorMessage(index - 1, 'email')" placeholder="Email" />
                                     </div>
                                     <div class="form-group">
 
@@ -160,15 +185,21 @@
 
                                     <div class="form-row">
                                         <div class="form-group">
-                                            <input type="text" name="contact1" v-model="form.branch[index-1].contact1" id="contact1" placeholder="Phone number" />
+                                            <input type="text" name="contact1" v-model="form.branch[index - 1].contact1"
+                                                @input="callRemoveErrorMessage(index - 1, 'contact1')" id="contact1"
+                                                placeholder="Phone number" />
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" name="contact2" id="contact2" v-model="form.branch[index-1].contact2"
+                                            <input type="text" name="contact2" id="contact2"
+                                                @input="callRemoveErrorMessage(index - 1, 'contact2')"
+                                                v-model="form.branch[index - 1].contact2"
                                                 placeholder="Alternative Phone number" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" name="address " id="address " v-model="form.branch[index-1].address" placeholder="address" />
+                                        <input type="text" name="address " id="address "
+                                            @input="callRemoveErrorMessage(index - 1, 'address')"
+                                            v-model="form.branch[index - 1].address" placeholder="address" />
                                     </div>
 
 
@@ -229,7 +260,8 @@
   
 <script>
 import "../../../css/style.css";
-
+import { router } from '@inertiajs/vue3'
+import axios from "axios";
 import { defineComponent, defineAsyncComponent } from 'vue'
 export default defineComponent({
     name: 'post',
@@ -242,6 +274,9 @@ export default defineComponent({
     },
     data() {
         return {
+            errors: [
+            ],
+            loading: false,
             form: {
                 haveBranch: '',
                 branchNumber: 1,
@@ -252,20 +287,28 @@ export default defineComponent({
                 address: "",
                 contact1: "",
                 contact2: "",
-                branch:[] 
+                branch: [
+                    {
+                        name: "",
+                        nuit: "",
+                        email: "",
+                        logo: "",
+                        address: "",
+                        contact1: "",
+                        contact2: "",
+                    }
+                ]
             },
             currentStep: 0,
             totalStep: 2,
             tab: 'cashier'
-
         }
     },
     watch: {
         'form.branchNumber': function (val, oldVal) {
-            this. add()
+
             if (this.form.branchNumber >= 1) {
                 this.totalStep = 3
-                // console.log('Valor atual:', val);
             } else {
                 this.totalStep = 2
             }
@@ -311,31 +354,96 @@ export default defineComponent({
                 this.activeByIndex(next)
                 this.currentStep++
             } else {
+                this.loading = true
                 this.submitForm()
                 return
             }
         },
         submitForm() {
-            this.$refs.dialogRef.show()
-        },
-        add(){
-         
-            for (let index = 0; index < this.form.branchNumber; index++) {
-                this.form.branch.push({
-                name: "",
-                    nuit: "",
-                    email: "",
-                    logo: "",
-                    address: "",
-                    contact1: "",
-                    contact2: "",
-            });
-                
+            if (this.form.haveBranch == 0) {
+                this.form.branch[0].name = this.form.name
+                this.form.branch[0].email = this.form.email
+                this.form.branch[0].nuit = this.form.nuit
+                this.form.branch[0].address = this.form.address
+                this.form.branch[0].contact1 = this.form.contact1
+                this.form.branch[0].contact2 = this.form.contact2
             }
-            
-        }
+            axios
+                .post("/company", this.form)
+                .then(({ data: result }) => {
+                    if (result.success) {
+                        // alert("ok");
+                        // this.$refs.dialogRef.show()
 
+                        this.$q.dialog({
+                            title: 'Success',
+                            message: '' + result.message,
+                            onDismiss: () => {
+                                this.$refs.dialogRef.show()
+                            }
+                        })
+                    } else {
+                        console.log("Erro");
+                        this.$q.dialog({
+                            title: 'Error',
+                            message: '' + result.message,
+                        })
+                    }
+                    this.loading = false
 
+                })
+                .catch((error) => {
+                    if (error.response.data.errors === undefined) {
+                        // console.log(error.response.data);
+                        this.$q.dialog({
+                            title: "Erro!",
+                            text: "" + error.response.data.message,
+                            icon: "error"
+                        });
+                    } else {
+                        this.errors = error.response.data.errors
+                    }
+
+                    this.currentStep = 1
+                    this.prev(this.currentStep - 1)
+                    this.loading = false
+
+                })
+        },
+        add() {
+            if (this.form.branchNumber !== '') {
+                var totalToAdd = Math.abs(this.form.branchNumber - this.form.branch.length);
+                for (let index = 0; index < totalToAdd; index++) {
+                    this.form.branch.push({
+                        name: "",
+                        nuit: "",
+                        email: "",
+                        logo: "",
+                        address: "",
+                        contact1: "",
+                        contact2: "",
+                    });
+                }
+            }
+
+        },
+        replacePoints(message) {
+            // Replace dots with spaces, ignoring dots at the end of the sentence.
+            return message.slice(0, -1).replace(/\./g, ' ') + message.slice(-1);
+        },
+        callRemoveErrorMessage(branchIndex, fieldName) {
+            // Calls the method removeErrorMessage with the specific field.
+            this.removeErrorMessage(`branch.${branchIndex}.${fieldName}`);
+        },
+        removeErrorMessage(fieldName) {
+            // Finds the index of the error message associated with the field.
+            const index = this.errors.findIndex(message => message.toLowerCase().includes(fieldName.toLowerCase()));
+
+            // Removes the error message if found.
+            if (index !== -1) {
+                this.errors.splice(index, 1);
+            }
+        },
     }
 
 
@@ -368,5 +476,23 @@ export default defineComponent({
     padding: 15px 20px;
     box-sizing: border-box;
     font-weight: 500;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+.alert-ul {
+    margin-block-start: 0.5em;
+    margin-block-end: 0.5em;
 }
 </style>
