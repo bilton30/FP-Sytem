@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="form-group">
 
-                                        <input type="file" id="file-input" name="file-input" accept="image/*" />
+                                        <input type="file" id="file-input" @change="handleFileChange" name="file-input" accept="image/*" />
 
                                         <label id="file-input-label" for="file-input">Select the company logo file</label>
                                     </div>
@@ -178,9 +178,9 @@
                                     </div>
                                     <div class="form-group">
 
-                                        <input type="file" id="file-input" name="file-input" accept="image/*" />
+                                        <input type="file" style=" display: none;" :id="`file-input_${index}`" :ref="`fileInputDynamic_${index}`" @change="handleDynamicFileChange(index)" name="file-input" accept="image/*" />
 
-                                        <label id="file-input-label" for="file-input">Select the company logo file</label>
+                                        <label id="file-input-label" :for="`file-input_${index}`">Select the company logo file</label>
                                     </div>
 
                                     <div class="form-row">
@@ -277,13 +277,15 @@ export default defineComponent({
             errors: [
             ],
             loading: false,
+            dynamicFormFiles: [],
+            staticFormFile: null,
             form: {
                 haveBranch: '',
                 branchNumber: 1,
                 name: "",
                 nuit: "",
                 email: "",
-                logo: "",
+                logo:"",
                 address: "",
                 contact1: "",
                 contact2: "",
@@ -292,7 +294,7 @@ export default defineComponent({
                         name: "",
                         nuit: "",
                         email: "",
-                        logo: "",
+                        logo:null,
                         address: "",
                         contact1: "",
                         contact2: "",
@@ -358,6 +360,43 @@ export default defineComponent({
                 this.submitForm()
                 return
             }
+
+        }, 
+        handleFileChange(event) {
+            this.form.logo = event.target.files[0];
+            // console.log( this.form.logo)
+          
+        },
+        handleDynamicFileChange(index) {
+            const fileInput = this.$refs[`fileInputDynamic_${index}`][0];
+            this.form.branch[index - 1].logo = fileInput.files[0];
+      
+        },
+        prepareForm() {
+            const formData = new FormData();
+            for (const key in this.form) {
+                // Se o campo for um objeto (como branch), itere sobre seus subcampos
+                if (typeof this.form[key] === 'object') {
+                    for (let i = 0; i < this.form[key].length; i++) {
+                        for (const subKey in this.form[key][i]) {
+                            formData.append(`${key}[${i}][${subKey}]`, this.form[key][i][subKey]);
+                          
+                        }
+                        // Adicione o arquivo ao FormData para o formulário dinâmico
+                        // if (this.dynamicFormFiles[i]) {
+                        //     console.log('aaaa')
+                        //     formData.append('logo[]', this.dynamicFormFiles[i]);
+                        // }
+                    }
+                } else {
+                    formData.append(key, this.form[key]);
+                }
+            }
+            // Adicione o arquivo ao FormData para o formulário estático
+            if (this.form.logo ) {
+                formData.append('logo', this.form.logo);
+            }
+            return formData
         },
         submitForm() {
             if (this.form.haveBranch == 0) {
@@ -367,9 +406,11 @@ export default defineComponent({
                 this.form.branch[0].address = this.form.address
                 this.form.branch[0].contact1 = this.form.contact1
                 this.form.branch[0].contact2 = this.form.contact2
+                this.form.branch[0].logo =  this.form.logo
             }
+            const formData = this.prepareForm()
             axios
-                .post("/company", this.form)
+                .post("/company", formData)
                 .then(({ data: result }) => {
                     if (result.success) {
                         // alert("ok");
@@ -410,6 +451,7 @@ export default defineComponent({
 
                 })
         },
+
         add() {
             if (this.form.branchNumber !== '') {
                 var totalToAdd = Math.abs(this.form.branchNumber - this.form.branch.length);

@@ -49,7 +49,7 @@ class CampanyController extends Controller
         try {
             //code...
             DB::beginTransaction();
-
+            return $request->all();
                 $validator = Validator::make($request->all(), [
                     'branch.*.name'=> 'required',
                     'branch.*.nuit'=> 'required',
@@ -67,7 +67,7 @@ class CampanyController extends Controller
                 return response()->json(['errors' => $validator->errors()->all()],501);
             }
             $input = $request->all();
-        
+     
             $input['userOwnerUID']=auth()->user()->id;
             $company =  Company::create( $input );
         
