@@ -67,7 +67,8 @@
                                     </div>
                                     <div class="form-group">
 
-                                        <input type="file" id="file-input" @change="handleFileChange" name="file-input" accept="image/*" />
+                                        <input type="file" id="file-input" @change="handleFileChange" name="file-input"
+                                            accept="image/*" />
 
                                         <label id="file-input-label" for="file-input">Select the company logo file</label>
                                     </div>
@@ -178,9 +179,12 @@
                                     </div>
                                     <div class="form-group">
 
-                                        <input type="file" style=" display: none;" :id="`file-input_${index}`" :ref="`fileInputDynamic_${index}`" @change="handleDynamicFileChange(index)" name="file-input" accept="image/*" />
+                                        <input type="file" style=" display: none;" :id="`file-input_${index}`"
+                                            :ref="`fileInputDynamic_${index}`" @change="handleDynamicFileChange(index)"
+                                            name="file-input" accept="image/*" />
 
-                                        <label id="file-input-label" :for="`file-input_${index}`">Select the company logo file</label>
+                                        <label id="file-input-label" :for="`file-input_${index}`">Select the company logo
+                                            file</label>
                                     </div>
 
                                     <div class="form-row">
@@ -285,7 +289,7 @@ export default defineComponent({
                 name: "",
                 nuit: "",
                 email: "",
-                logo:"",
+                logo: "",
                 address: "",
                 contact1: "",
                 contact2: "",
@@ -294,7 +298,7 @@ export default defineComponent({
                         name: "",
                         nuit: "",
                         email: "",
-                        logo:null,
+                        logo: null,
                         address: "",
                         contact1: "",
                         contact2: "",
@@ -361,16 +365,36 @@ export default defineComponent({
                 return
             }
 
-        }, 
+        },
         handleFileChange(event) {
             this.form.logo = event.target.files[0];
-            // console.log( this.form.logo)
-          
+            this.form.logo
+            const label = document.querySelector('[for=file-input]');
+
+            if (this.form.logo && this.form.logo.name) {
+                // Obtenha o nome do arquivo e adicione em negrito
+                const fileName = this.form.logo.name;
+                label.innerHTML = `<strong style="color:#222;">${fileName}</strong>`;
+            } else {
+                // Se nenhum arquivo for selecionado, redefina o texto padrão
+                label.innerHTML = 'Select the company logo file';
+            }
+
         },
         handleDynamicFileChange(index) {
             const fileInput = this.$refs[`fileInputDynamic_${index}`][0];
             this.form.branch[index - 1].logo = fileInput.files[0];
-      
+            const label = document.querySelector(`[for=file-input_${index}]`);
+
+            if (fileInput.files.length > 0) {
+                // Obtenha o nome do arquivo e adicione em negrito
+                const fileName = fileInput.files[0].name;
+                label.innerHTML = ` <strong style="color:#222;">${fileName}</strong>`;
+            } else {
+                // Se nenhum arquivo for selecionado, redefina o texto padrão
+                label.innerHTML = 'Select the company logo file';
+            }
+
         },
         prepareForm() {
             const formData = new FormData();
@@ -380,20 +404,14 @@ export default defineComponent({
                     for (let i = 0; i < this.form[key].length; i++) {
                         for (const subKey in this.form[key][i]) {
                             formData.append(`${key}[${i}][${subKey}]`, this.form[key][i][subKey]);
-                          
                         }
                         // Adicione o arquivo ao FormData para o formulário dinâmico
-                        // if (this.dynamicFormFiles[i]) {
-                        //     console.log('aaaa')
-                        //     formData.append('logo[]', this.dynamicFormFiles[i]);
-                        // }
                     }
                 } else {
                     formData.append(key, this.form[key]);
                 }
             }
-            // Adicione o arquivo ao FormData para o formulário estático
-            if (this.form.logo ) {
+            if (this.form.logo) {
                 formData.append('logo', this.form.logo);
             }
             return formData
@@ -406,7 +424,7 @@ export default defineComponent({
                 this.form.branch[0].address = this.form.address
                 this.form.branch[0].contact1 = this.form.contact1
                 this.form.branch[0].contact2 = this.form.contact2
-                this.form.branch[0].logo =  this.form.logo
+                this.form.branch[0].logo = this.form.logo
             }
             const formData = this.prepareForm()
             axios
@@ -419,9 +437,9 @@ export default defineComponent({
                         this.$q.dialog({
                             title: 'Success',
                             message: '' + result.message,
-                            onDismiss: () => {
-                                this.$refs.dialogRef.show()
-                            }
+
+                        }).onDismiss(() => {
+                            this.$refs.dialogRef.show()
                         })
                     } else {
                         console.log("Erro");
@@ -487,8 +505,6 @@ export default defineComponent({
             }
         },
     }
-
-
 })
 </script>
 

@@ -9,8 +9,10 @@ use App\Models\Branch;
 use Inertia\Inertia;
 use Validator;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Upload;
 class CampanyController extends Controller
 {
+    use Upload;
     /**
      * Display a listing of the resource.
      *
@@ -49,7 +51,6 @@ class CampanyController extends Controller
         try {
             //code...
             DB::beginTransaction();
-            return $request->all();
                 $validator = Validator::make($request->all(), [
                     'branch.*.name'=> 'required',
                     'branch.*.nuit'=> 'required',
@@ -67,7 +68,7 @@ class CampanyController extends Controller
                 return response()->json(['errors' => $validator->errors()->all()],501);
             }
             $input = $request->all();
-     
+            $input['logo'] = $this->uploadImage($request->logo, 'company');
             $input['userOwnerUID']=auth()->user()->id;
             $company =  Company::create( $input );
         
@@ -75,7 +76,7 @@ class CampanyController extends Controller
                 foreach ($input['branch'] as $values) {
 
                     $values['company_id'] = $company->id;
-
+                    $values['logo'] = $this->uploadImage( $values['logo'], 'company');
                     Branch::create( $values );
                 }
             }
@@ -86,7 +87,8 @@ class CampanyController extends Controller
             return response()->json(["message" => $th->getMessage() ]);
         }
     }
-   
+ 
+
     /**
      * Display the specified resource.
      *

@@ -34,7 +34,7 @@ class Company extends Model
         'nuit',
         'contact1',
         'contact2',
-        'prefix',
+        'logo',
         'address',
         'status',
         'userOwnerUID',
@@ -54,7 +54,7 @@ class Company extends Model
         'nuit' => 'string',
         'contact1' => 'string',
         'contact2' => 'string',
-        'prefix' => 'string',
+        'logo' => 'string',
         'address' => 'string',
         'status' => 'integer',
         // 'id' => 'string'
