@@ -3,12 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class company extends Model
+use App\Models\Traits\MultitenancyConnection;
+class Company extends Model
 {
-    use SoftDeletes, HasUuids,UsesTenantConnection;
+    use SoftDeletes, HasUuids, MultitenancyConnection;
     
     public $incrementing = false;
 
@@ -23,9 +23,9 @@ class company extends Model
     {
         parent::boot();
 
-        static::creating(function ($model) {
-            $model->server_created_at = now();
-        });
+        // static::creating(function ($model) {
+        //     $model->server_created_at = now();
+        // });
     }
     public $fillable = [
         'name',
@@ -34,9 +34,10 @@ class company extends Model
         'nuit',
         'contact1',
         'contact2',
-        'prefix',
+        'logo',
         'address',
         'status',
+        'userOwnerUID',
         'id',
         'app_uid',
         'sync_uid',
@@ -53,7 +54,7 @@ class company extends Model
         'nuit' => 'string',
         'contact1' => 'string',
         'contact2' => 'string',
-        'prefix' => 'string',
+        'logo' => 'string',
         'address' => 'string',
         'status' => 'integer',
         // 'id' => 'string'
@@ -73,9 +74,9 @@ class company extends Model
         'deleted_user_uid' => 'string'
     ];
     
-    public function invoice_contacts()
-    {
-        return $this->hasMany(invoice_contacts::class,"company_uid");
-    }
+    // public function invoice_contacts()
+    // {
+    //     return $this->hasMany(invoice_contacts::class,"company_uid");
+    // }
  
 }

@@ -20,14 +20,13 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('contact1');
-            $table->string('userOwnerUID')->nullable();
+            $table->string('contact2');
             $table->string('address')->nullable();
             $table->string('nuit')->nullable()->unique();
           
             $table->string('sms_balance')->nullable();
-            $table->jsonb('physical_location');
+            $table->jsonb('physical_location')->nullable();
             $table->timestamps();
-            // $table->foreignUuid('payment_uid')->references('id')->on('payments')->onDelete('cascade');
             $table->foreignUuid('company_id')->references('id')->on('Companies')->onDelete('cascade');
             
         });

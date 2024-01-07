@@ -12,11 +12,12 @@ class RolesController extends Controller
     
     public function __construct(PermissionGeneratorController $permissaoController)
     {
+        $this->middleware(['auth','verified']);
         $this->permissaoController = $permissaoController;
-    //     $this->middleware('permission:roles-|index-create|roles-edit|roles-delete', ['only' => ['index', 'store']]);
-    //     $this->middleware('permission:roles-create', ['only' => ['create', 'store']]);
-    //     $this->middleware('permission:roles-edit', ['only' => ['edit', 'update']]);
-    //     $this->middleware('permission:roles-destroy', ['only' => ['destroy']]);
+        $this->middleware('permission:roles-|index-create|roles-edit|roles-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:roles-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:roles-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:roles-destroy', ['only' => ['destroy']]);
     }
 
     /**

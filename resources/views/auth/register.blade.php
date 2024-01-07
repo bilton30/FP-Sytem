@@ -8,110 +8,92 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
-          integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
-          crossorigin="anonymous"/>
+      <link rel="stylesheet" href="{{ asset('assets/fonts/material-icon/css/material-design-iconic-font.min.css')}}">
 
-    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <!-- Main css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}"  rel="stylesheet">
+
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 
 </head>
-<body class="hold-transition register-page">
-<div class="register-box">
-    <div class="register-logo">
-        <a href="{{ url('/home') }}"><b>{{ config('app.name') }}</b></a>
-    </div>
+<body >
 
-    <div class="card">
-        <div class="card-body register-card-body">
-            <p class="login-box-msg">Register a new membership</p>
+    <div class="main">
 
-            <form method="post" action="{{ route('register') }}">
+        <!-- Sign up form -->
+        <section class="signup">
+            <div class="container">
+                <div class="signup-content">
+                    <div class="signup-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form method="POST" method="post" action="{{ route('register') }}" class="register-form" id="register-form">
+
                 @csrf
-
-                <div class="input-group mb-3">
-                    <input type="text"
-                           name="name"
-                           class="form-control @error('name') is-invalid @enderror"
-                           value="{{ old('name') }}"
-                           placeholder="Full name">
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-user"></span></div>
+                            @error('name')
+                                <div class="alert">{{ $message }}</div>       
+                            @enderror
+                            <div class="form-group">
+                                <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="name" value="{{ old('name') }}"  id="name" placeholder="Your Name"/>
+                                
+                            </div>
+                             @error('email')
+                                <div class="alert">{{ $message }}</div>       
+                            @enderror
+                            <div class="form-group">
+                                <label for="email"><i class="zmdi zmdi-email"></i></label>
+                                <input type="email" name="email" required  id="email" placeholder="Your Email"/>
+                            </div>
+                            @error('password')
+                                <div class="alert">{{ $message }}</div>       
+                            @enderror
+                            <div class="form-group">
+                                <label for="pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="password" required   value="{{ old('email') }}" id="pass" placeholder="Password"/>
+                            </div>
+                          
+                            <div class="form-group">
+                                <label for="re-pass"><i class="zmdi zmdi-lock-outline"></i></label>
+                                <input type="password" name="password_confirmation"  required id="re_pass" placeholder="Repeat your password"/>
+                            </div>
+                            <span class="invalid-feedback alert" style="display:none" >
+                                <strong>Agree with all the statements</strong>
+                            </span>
+                            <div class="form-group">
+                                <input type="checkbox" name="agree-term"   id="agree-term" class="agree-term" />
+                                <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
+                            </div>
+                        </form>
                     </div>
-                    @error('name')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="input-group mb-3">
-                    <input type="email"
-                           name="email"
-                           value="{{ old('email') }}"
-                           class="form-control @error('email') is-invalid @enderror"
-                           placeholder="Email">
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-envelope"></span></div>
-                    </div>
-                    @error('email')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="input-group mb-3">
-                    <input type="password"
-                           name="password"
-                           class="form-control @error('password') is-invalid @enderror"
-                           placeholder="Password">
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-lock"></span></div>
-                    </div>
-                    @error('password')
-                    <span class="invalid-feedback" role="alert">
-                        <strong>{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-
-                <div class="input-group mb-3">
-                    <input type="password"
-                           name="password_confirmation"
-                           class="form-control"
-                           placeholder="Retype password">
-                    <div class="input-group-append">
-                        <div class="input-group-text"><span class="fas fa-lock"></span></div>
+                    <div class="signup-image" >
+                        <figure><img src="{{ asset('assets/images/7wec_s1wt_220517.jpg') }}" alt="sing up image"></figure>
+                        <a href="/login" class="signup-image-link">I already have an account</a>
                     </div>
                 </div>
+            </div>
+        </section>
 
-                <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-                            <label for="agreeTerms">
-                                I agree to the <a href="#">terms</a>
-                            </label>
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
-                    </div>
-                    <!-- /.col -->
-                </div>
-            </form>
 
-            <a href="{{ route('login') }}" class="text-center">I already have a membership</a>
-        </div>
-        <!-- /.form-box -->
-    </div><!-- /.card -->
+    </div>
+<script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}" defer></script>
+<script src="{{ asset('assets/js/main.js') }}" defer></script>
+<script>
+document.querySelector('form').addEventListener('submit', function(e) {
+    var terms = document.querySelector('#agree-term');
+    var error = document.querySelector('.invalid-feedback');
+    if (!terms.checked) {
+        e.preventDefault();
+        error.style.display = 'block'; // mostra a mensagem de erro
+    } else {
+        error.style.display = 'none'; // esconde a mensagem de erro
+    }
+});
+</script>
 
-    <!-- /.form-box -->
-</div>
-<!-- /.register-box -->
-
-<script src="{{ mix('js/app.js') }}" defer></script>
-
+   {{-- <script src="vendor/jquery/jquery.min.js"></script> --}}
+    {{-- <script src="js/main.js"></script> --}}
 </body>
 </html>

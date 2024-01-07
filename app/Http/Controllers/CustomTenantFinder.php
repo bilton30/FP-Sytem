@@ -9,6 +9,7 @@ use Spatie\Multitenancy\Models\Tenant;
 class CustomTenantFinder extends TenantFinder
 {
     use UsesTenantModel;
+    
     public function findForRequest(Request $request): ?Tenant
     {
         // Implemente a lógica para encontrar o tenant com base na requisição (por exemplo, no cabeçalho da solicitação)

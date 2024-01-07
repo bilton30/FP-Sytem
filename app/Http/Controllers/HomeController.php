@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\payment_type;
 use App\Models\payment;
 use Inertia\Inertia;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Auth;
+use Illuminate\Support\Facades\Artisan;
+use App\Http\Controllers\PermissionGeneratorController;
 class HomeController extends Controller
 {
     /**
@@ -13,9 +18,10 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+        public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware(['auth','verified']);
+   
     }
 
     /**
@@ -23,15 +29,23 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
+     
     public function index(){
-        $data = [];
-    //     payment_type::withCount('payment')
-    //    ->withSum('payment', 'total')
-    //    ->get();
+             
+        $user = Auth::user();
+        if($user->hasAnyRole(['Company','Admin'])){
+            if($user->hasRole('Company')){
+                  $data = [];
+
         $sumServicePayments = 0;
         $sumProductPayments = 0;
         $sumWaterPayments = 0;
         return Inertia::render('home',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));
+            }         
+    }else{
+        return redirect()->route('company.setup');
+      }
+
     }
 
     public function cashier()
