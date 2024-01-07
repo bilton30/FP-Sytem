@@ -28,7 +28,7 @@
             {{-- <p class="login-box-msg">Sign in to start your session</p> --}}
             <div class="left">
                 <a href="/" style="margin-top:15%; margin-button:15%">
-                    <img style=" margin-top: 10%" src="{{ asset('images/login_v1_4.png') }}" alt="">
+                    <img style="" src="{{ asset('images/22472-removebg-preview.png') }}" alt="">
                 </a>
                
             </div>
@@ -40,7 +40,7 @@
             <form method="post" action="{{ url('/login') }}">
                 @csrf
                 <a href="/">
-                    <img style="width: 160px;" src="{{ asset('images/logo.jpg') }}" alt="">
+                    <img style="width: 120px;" src="{{ asset('images/polegar.png') }}" alt="">
                 </a>
                 <h4>Welcome Back</h4>
                 {{-- <h4>Kuhandza Farmácia - <span>LOGIN</span></h4> --}}

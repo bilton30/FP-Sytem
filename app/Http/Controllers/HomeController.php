@@ -32,38 +32,20 @@ class HomeController extends Controller
      
     public function index(){
              
-//         $user = Auth::user();
-// // $user->assignRole('writer');
-// //  $databaseName = 'seu_nome_de_banco1';
-// //  Artisan::call('migrate', array('--path' => 'app/migrations', '--force' => true,'--database' => 'seu_nome_de_banco1'));
-// //         // // Execute uma consulta SQL para criar o banco de dados
-// //         // $resultado = DB::statement("CREATE DATABASE IF NOT EXISTS $databaseName");
+        $user = Auth::user();
+        if($user->hasAnyRole(['Company','Admin'])){
+            if($user->hasRole('Company')){
+                  $data = [];
 
-// //         // if ($resultado) {
-// //         //    Artisan::call('migrate', array('--path' => 'app/migrations', '--force' => true));
-// //         //     return "Banco de dados criado com sucesso!";
-// //         // } else {
-// //         //     return "Falha ao criar o banco de dados.";
-// //         // }
-// // return ;
-//     if($user->hasAnyRole(['Company','Admin'])){
-//         if($user->hasRole('Company')){
-//              return "  Company";
-//         }
-    
-//     }else{
-//       return redirect()->route('company.setup');
-//     }
-        $data=[];
-
-        $data = [];
-//     //     payment_type::withCount('payment')
-//     //    ->withSum('payment', 'total')
-//     //    ->get();
         $sumServicePayments = 0;
         $sumProductPayments = 0;
         $sumWaterPayments = 0;
         return Inertia::render('home',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));
+            }         
+    }else{
+        return redirect()->route('company.setup');
+      }
+
     }
 
     public function cashier()
