@@ -43,7 +43,10 @@ class HomeController extends Controller
         return Inertia::render('home',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));
             }         
     }else{
-        return redirect()->route('company.setup');
+      
+
+  
+        return redirect()->route('setup.wizard');
       }
 
     }

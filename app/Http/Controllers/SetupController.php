@@ -3,51 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Spatie\Multitenancy\Models\Tenant;
+// use Spatie\Multitenancy\Models\Tenant;
 use App\Models\company;
 use App\Models\Branch;
 use Inertia\Inertia;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Upload;
-class CampanyController extends Controller
+use Illuminate\Support\Facades\Artisan;
+use App\Models\TenantModel;
+class SetupController extends AppBaseController
 {
     use Upload;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $data=[];
-        return Inertia::render('setup/index',compact("data"));
+    protected $company;
+
+    public function __construct(){
+
+        // $this->$company = $companyController;
+    }
+    public function index(){
+
+  
+    //  return  $tenant ;
+            return Inertia::render('setup/index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-
-    public function setup()
-    {
-      return "working";
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    { 
+    public function store(Request $request){
         try {
             //code...
             DB::beginTransaction();
@@ -70,67 +51,56 @@ class CampanyController extends Controller
             $input = $request->all();
             $input['logo'] = $this->uploadImage($request->logo, 'company');
             $input['userOwnerUID']=auth()->user()->id;
+
+            auth()->user()->assignRole('company');
+
             $company =  Company::create( $input );
         
             if($company){
                 foreach ($input['branch'] as $values) {
-
                     $values['company_id'] = $company->id;
                     $values['logo'] = $this->uploadImage( $values['logo'], 'company');
                     Branch::create( $values );
                 }
             }
+
+                $this->createTenent($company->name,$company->id);
+                
+
             DB::commit();
             return response()->json(["success" => true, 'message' => 'Company created successfully!']);
         } catch (\Throwable $th) {      
             DB::rollback();
-            return response()->json(["message" => $th->getMessage() ]);
+            return $this->sendError(["message" => $th->getMessage() ]);
         }
     }
- 
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+   public function createTenent($name,$id)
+   {   
+        try {
+            
+            DB::beginTransaction();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+            $tenant = Tenant::whereName($name)->first();
+            if ($tenant) {
+                $company = company::find($id);
+                $name = $company->nuit.'_'. $company->name;
+            }
+          
+            $tenant =  TenantModel::create([
+                    'name' => $name,
+                    'company_id' => $id,
+                    'domain' => $name.'.'.request()->getHost(),
+                    'database' => "SGB_tenant_".$name,
+                ]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+            DB::commit();
+    } catch (\Exception $th) {
+        DB::rollback();
+        return $this->sendError("Can not create tenant  ".$name."please contact the admin");
+        //throw $th;
     }
+   }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    
 }

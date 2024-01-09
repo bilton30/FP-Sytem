@@ -329,6 +329,7 @@ export default defineComponent({
         }
     },
     mounted() {
+
         // console.log(this.data)
 
         // this.$refs.dialogRef.show()
@@ -428,7 +429,7 @@ export default defineComponent({
             }
             const formData = this.prepareForm()
             axios
-                .post("/company", formData)
+                .post("/setup/wizard", formData)
                 .then(({ data: result }) => {
                     if (result.success) {
                         // alert("ok");
@@ -439,7 +440,8 @@ export default defineComponent({
                             message: '' + result.message,
 
                         }).onDismiss(() => {
-                            this.$refs.dialogRef.show()
+                            window.location.href = '/home'
+                            // this.$refs.dialogRef.show()
                         })
                     } else {
                         console.log("Erro");

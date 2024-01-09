@@ -15,7 +15,10 @@ trait PermissionGeneratorController
             'PermissionGeneratorController',
             'Helper\Upload',
             'CustomTenantFinder',
-            'ResolverController'
+            'ResolverController',
+            'createTenent',
+            'migrateTenet',
+            'createDatabaseTenant'
         ];
 
     public function synchronizelPermission()

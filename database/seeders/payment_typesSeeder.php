@@ -16,7 +16,7 @@ class payment_typesSeeder extends Seeder
      */
     public function run()
     {  $type=[
-        ["description"=>"Banco Agua"],
+   
         ["description"=>"Dinheiro"],
         ["description"=>"Emola"],
         ["description"=>"Mpesa"],
