@@ -29,7 +29,7 @@ class TenantModel extends Tenant
 
     public function createDatabase()
     {
-        DB::statement("CREATE DATABASE {$this->database}");
+        DB::connection('tenant')->statement("CREATE DATABASE {$this->database}");
         // Use Artisan to call the command to create the database
         Artisan::call('tenants:artisan "migrate --database=tenant --force" --tenant='.$this->getKey());
     }

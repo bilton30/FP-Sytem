@@ -8,10 +8,12 @@ use App\Models\company;
 use App\Models\Branch;
 use Inertia\Inertia;
 use Validator;
-use Illuminate\Support\Facades\DB;
+use DB;
 use App\Http\Controllers\Upload;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\TenantModel;
+use InfyOm\Generator\Utils\ResponseUtil;
+
 class SetupController extends AppBaseController
 {
     use Upload;
@@ -24,14 +26,16 @@ class SetupController extends AppBaseController
     public function index(){
 
   
-    //  return  $tenant ;
+    //  return  ResponseUtil::makeError("error") ;
             return Inertia::render('setup/index');
     }
 
     public function store(Request $request){
+        DB::beginTransaction();
         try {
             //code...
-            DB::beginTransaction();
+            
+           
                 $validator = Validator::make($request->all(), [
                     'branch.*.name'=> 'required',
                     'branch.*.nuit'=> 'required',
@@ -68,20 +72,17 @@ class SetupController extends AppBaseController
                 
 
             DB::commit();
-            return response()->json(["success" => true, 'message' => 'Company created successfully!']);
-        } catch (\Throwable $th) {      
+            return $this->sendSuccess( 'Company created successfully!');
+
+        } catch (\Exception $th) {      
             DB::rollback();
-            return $this->sendError(["message" => $th->getMessage() ]);
+            return $this->sendError($th->getMessage() );
         }
     }
 
    public function createTenent($name,$id)
    {   
-        try {
-            
-            DB::beginTransaction();
-
-            $tenant = Tenant::whereName($name)->first();
+            $tenant = TenantModel::whereName($name)->first();
             if ($tenant) {
                 $company = company::find($id);
                 $name = $company->nuit.'_'. $company->name;
@@ -93,13 +94,9 @@ class SetupController extends AppBaseController
                     'domain' => $name.'.'.request()->getHost(),
                     'database' => "SGB_tenant_".$name,
                 ]);
-
-            DB::commit();
-    } catch (\Exception $th) {
-        DB::rollback();
-        return $this->sendError("Can not create tenant  ".$name."please contact the admin");
-        //throw $th;
-    }
+            // DB::connection('tenant')->statement("CREATE DATABASE {$tenant->database}");
+            //     // Use Artisan to call the command to create the database
+            //     Artisan::call('tenants:artisan "migrate --database=tenant --force" --tenant='.$tenant->id);
    }
 
     
