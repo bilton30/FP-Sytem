@@ -10,10 +10,11 @@
     "Please correct the following error(s)": "Por favor, corrija o(s) seguinte(s) erro(s):",
     "Enter the identification details for all branches or subsidiaries": "Insira os detalhes de identificação de todas as filiais ou subsidiárias.",
     "Permissions": "Permissões",
-    "Indicates required field": "Indica campo obrigatório",
+    "Indicates required field": "Indica os campos obrigatórios",
     "Show Roles": "Exibir Funções",
     "New Role": "Nova Função",
     "Roles": "Funções",
     "Name": "nome",
-    "Action": "Acções"
+    "Action": "Acções",
+    "Are you sure you want to delete this item":"Tem certeza de que deseja excluir este item?"
 }

@@ -165,6 +165,8 @@ class RolesController extends Controller
 
         $role->name = $request->input('name');
 
+        $role->guard_name = $request->input('guard_name');
+        
         $role->save();
 
         $role->syncPermissions($request->input('permission'));

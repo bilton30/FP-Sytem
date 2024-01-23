@@ -4,7 +4,7 @@
       <!-- <p v-can="'role-index'" style="color: brown;">Este parágrafo só será exibido se o usuário tiver permissão de leitura</p> -->
       <table-actions :data="roles" :columns="table.columns" @action="performAction" :tableName="$t('Roles')"
         buttonName="New Role" class="q-mt-lg  border"></table-actions>
-      <q-dialog ref="dialog" @hide="close">
+      <q-dialog ref="dialog" @hide="close('dialog')">
         <q-card class="q-dialog-plugin" style="width: 500px; max-width: 80vw;" ref="dialogContainer">
           <!--content-->
           <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
@@ -40,7 +40,7 @@
                   <q-item class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <q-item-section>
                       <h5 class="ml-0 mr-0 pb-0 d-flex justify-content-between" style="margin: 0px;">
-                        {{$t("Permissions")}}
+                        {{ $t("Permissions") }}
                         <q-checkbox v-model="selected" color="primary" @update:model-value="selectItems"> </q-checkbox>
                       </h5>
                     </q-item-section>
@@ -63,8 +63,9 @@
 
           <!-- buttons example -->
           <q-card-actions align="right">
-            <small class="bg-secondary" style="position: absolute; left:20px;">* {{$t("Indicates required field")}}</small>
-            <q-btn color="negative" label="Cancel" @click="close" />
+            <small class="bg-secondary" style="position: absolute; left:20px;">* {{ $t("Indicates required field") }}
+            </small>
+            <q-btn color="negative" label="Cancel" @click="close('dialog')" />
             <q-btn :disable="loading" class="text-capitalize bg-info text-white" label="Submit"
               @click="save(), loading = true">
               <div v-if="loading">
@@ -76,28 +77,28 @@
         </q-card>
       </q-dialog>
       <!--principal dialog/-->
-      <q-dialog ref="dialogShow" @hide="close">
+      <q-dialog ref="dialogShow" @hide="close('dialogShow')">
         <q-card class="q-dialog-plugin" style="width: 500px; max-width: 80vw;" ref="dialogContainer">
           <!--content-->
           <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
             <q-card class="card-bg text-white no-shadow" bordered>
               <q-card-section class="text-h6 ">
-                <div class="text-h6">{{$t("Show Roles")}}</div>
+                <div class="text-h6">{{ $t("Show Roles") }}</div>
                 <!-- <div class="text-subtitle2">Complete profile</div> -->
               </q-card-section>
               <q-card-section class="q-pa-sm">
                 <q-list class="row">
                   <q-item class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <q-item-section>
-                      <q-input dark color="white" dense v-model="editedItem.name" disable :label="$t('Role Name')" lazy-rules
-                        :rules="[val => val && val.length > 0 || 'Please type role name']" style="margin-top: 15px;" />
+                      <q-input dark color="white" dense v-model="editedItem.name" disable :label="$t('Role Name')"
+                        lazy-rules :rules="[val => val && val.length > 0 || 'Please type role name']"
+                        style="margin-top: 15px;" />
                     </q-item-section>
                   </q-item>
                   <q-item class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                     <q-item-section>
-                      <q-select fill v-model="editedItem.guard_name" disable :options="guard_name" label="$t('Guard Name')"
-                        @update:model-value="selectGuard(editedItem.guard_name)"
-                        />
+                      <q-select fill v-model="editedItem.guard_name" disable :options="guard_name"
+                        :label="$t('Guard Name')" @update:model-value="selectGuard(editedItem.guard_name)" />
                       <!-- <q-input dark color="white" dense v-model="editedItem.guard_name"  label="Guard Name *" value="web"
                         /> -->
                     </q-item-section>
@@ -105,7 +106,7 @@
                   <q-item class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <q-item-section>
                       <h5 class="ml-0 mr-0 pb-0 d-flex justify-content-between" style="margin: 0px;">
-                        {{$t("Permissions")}}
+                        {{ $t("Permissions") }}
                       </h5>
                     </q-item-section>
                   </q-item>
@@ -127,8 +128,9 @@
 
           <!-- buttons example -->
           <q-card-actions align="right">
-            <small class="bg-secondary" style="position: absolute; left:20px;">* {{$t("Indicates required field")}}</small>
-            <q-btn color="negative" label="Cancel" @click="close" />
+            <small class="bg-secondary" style="position: absolute; left:20px;">* {{ $t("Indicates required field") }}
+            </small>
+            <q-btn color="negative" label="Cancel" @click="close('dialogShow')" />
 
           </q-card-actions>
         </q-card>
@@ -250,23 +252,28 @@ export default defineComponent({
 
       if (action === 'create') {
         this.$refs.dialog.show()
+
       } else if (action === 'update') {
-        //
-        console.log("aqui1")
+
       } else if (action === 'edit') {
-        // this.edit(item)
-        console.log("aqui2")
-      } else if (action === 'delete') {
-        console.log("aqui3")
-        // this.deleteItem(item)
-      } else if (action === 'show') {
-        $q.loading.show({
-          message: 'Please wait...',
-          boxClass: 'bg-grey-2 text-grey-9',
+        this.$q.loading.show({
+          message: this.$t("Please wait"),
+          boxClass: 'bg-grey-4 text-grey-9',
           spinnerColor: 'primary'
         })
+        this.edit(item)
 
+      } else if (action === 'delete') {
+        this.deleteItem(item)
+
+      } else if (action === 'show') {
+        this.$q.loading.show({
+          message: this.$t("Please wait"),
+          boxClass: 'bg-grey-4 text-grey-9',
+          spinnerColor: 'primary'
+        })
         this.show(item)
+
       }
     },
     async edit(item) {
@@ -282,6 +289,7 @@ export default defineComponent({
       this.editedItem.name = item.name;
       this.editedItem.guard_name = item.guard_name;
       this.editedItem.id = item.id;
+      this.$q.loading.hide()
       this.$refs.dialog.show()
     },
     editConfirm() {
@@ -292,6 +300,7 @@ export default defineComponent({
         .then((response) => {
           // this.$auth.$reset();
           this.loading = false;
+          this.close('dialog');
           this.$q.dialog({
             title: 'Success',
             message: '' + response.data.message,
@@ -299,6 +308,7 @@ export default defineComponent({
         })
         .catch((error) => {
           this.loading = false;
+          this.close('dialog');
           this.$q.dialog({
             title: 'Error',
             message: '' + error.response.data.message,
@@ -312,7 +322,7 @@ export default defineComponent({
         .post("/roles", formData, {})
         .then((response) => {
           this.initialize()
-          this.close();
+          this.close('dialog');
           this.loading = false;
           this.$q.dialog({
             title: 'Success',
@@ -322,7 +332,7 @@ export default defineComponent({
         .catch((error) => {
           this.loading = false;
           if (error.response.data.errors === undefined) {
-            this.close();
+            this.close('dialog');
             this.$q.dialog({
               title: "Erro!",
               text: "" + error.response.data.message,
@@ -346,16 +356,29 @@ export default defineComponent({
             return permission;
           }
         );
-        console.log(this.editedItem)
+        this.$q.loading.hide()
         this.$refs.dialogShow.show()
         this.loading = false;
       });
     },
 
     deleteItem(item) {
-      this.editedIndex = this.roles.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.$refs.dialogDelete.show()
+      this.$q.dialog({
+        title: 'Confirm',
+        message: this.$t('Are you sure you want to delete this item'),
+        cancel: true,
+        persistent: true
+      }).onOk(() => {
+        this.editedIndex = this.roles.indexOf(item);
+        this.editedItem = Object.assign({}, item);
+        this.deleteConfirm()
+        this.$q.loading.show({
+          message: this.$t("Please wait"),
+          boxClass: 'bg-grey-4 text-grey-9',
+          spinnerColor: 'primary'
+        })
+      })
+
     },
 
     deleteConfirm() {
@@ -365,12 +388,7 @@ export default defineComponent({
       axios
         .post("/roles/" + this.editedItem.id, formData, {})
         .then((response) => {
-
-          this.loading = false;
-          this.$q.dialog({
-            title: 'Success',
-            message: '' + response.data.message,
-          })
+          this.$q.loading.hide()
           this.$q.dialog({
             title: 'Success',
             message: '' + response.data.message,
@@ -378,14 +396,14 @@ export default defineComponent({
           this.roles.splice(this.editedIndex, 1);
         })
         .catch((error) => {
-          this.loading = false;
+          this.$q.loading.hide()
           // console.log(error.response.data);
           this.$q.dialog({
             title: 'Error',
             message: '' + error.response.data.message,
           })
         });
-      this.closeDelete();
+
     },
     prepareForm(form, method = 'POST') {
       const formData = new FormData();
@@ -407,16 +425,9 @@ export default defineComponent({
       formData.append("_method", method);
       return formData
     },
-    close() {
-      this.$refs.dialog.hide()
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
+    close(dialogRef) {
+      this.$refs[dialogRef].hide();
 
-    closeDelete() {
-      this.$refs.dialogDelete.hide()
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
         this.editedIndex = -1;
@@ -425,7 +436,7 @@ export default defineComponent({
 
     save() {
       if (this.editedIndex > -1) {
-        this.close();
+      
         this.editConfirm()
         Object.assign(this.roles[this.editedIndex], this.editedItem);
       } else {
