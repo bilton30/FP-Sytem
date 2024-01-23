@@ -33,7 +33,7 @@ class HomeController extends Controller
     public function index(){
              
         $user = Auth::user();
-        if($user->hasAnyRole(['Company','Admin'])){
+        if($user->hasAnyRole(['Company','landlord'])){
             if($user->hasRole('Company')){
                   $data = [];
 
@@ -43,7 +43,10 @@ class HomeController extends Controller
         return Inertia::render('home',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));
             }         
     }else{
-        return redirect()->route('company.setup');
+      
+
+  
+        return redirect()->route('setup.wizard');
       }
 
     }

@@ -20,10 +20,9 @@ return new class extends Migration
             $table->string('logo')->nullable();
             $table->string('email')->nullable()->unique();
             $table->string('contact1');
-            $table->string('contact2');
+            $table->string('contact2')->nullable();
             $table->string('address')->nullable();
             $table->string('nuit')->nullable()->unique();
-          
             $table->string('sms_balance')->nullable();
             $table->jsonb('physical_location')->nullable();
             $table->timestamps();

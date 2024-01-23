@@ -149,10 +149,9 @@
                             </figure>
 
                             <div class="fieldset-content" v-if="form.branch.length == form.branchNumber">
-                                <label class="form-label">Enter the identification details for all branches or
-                                    subsidiaries.</label>
+                                <label class="form-label">{{$t("Enter the identification details for all branches or subsidiaries")}}</label>
                                 <div class="alert alert-danger" v-if="errors.length" role="alert">
-                                    <b>Please correct the following error(s):</b>
+                                    <b>{{ $t("Please correct the following error(s)") }}</b>
                                     <ul class="alert-ul">
                                         <li v-for="error in errors" key="error">{{ replacePoints(error) }}</li>
                                     </ul>
@@ -329,6 +328,7 @@ export default defineComponent({
         }
     },
     mounted() {
+
         // console.log(this.data)
 
         // this.$refs.dialogRef.show()
@@ -428,18 +428,16 @@ export default defineComponent({
             }
             const formData = this.prepareForm()
             axios
-                .post("/company", formData)
+                .post("/setup/wizard", formData)
                 .then(({ data: result }) => {
                     if (result.success) {
-                        // alert("ok");
-                        // this.$refs.dialogRef.show()
-
                         this.$q.dialog({
                             title: 'Success',
                             message: '' + result.message,
 
                         }).onDismiss(() => {
-                            this.$refs.dialogRef.show()
+                            window.location.href = '/home'
+                            // this.$refs.dialogRef.show()
                         })
                     } else {
                         console.log("Erro");

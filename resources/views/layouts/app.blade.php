@@ -16,12 +16,13 @@
   </body>
   <script type="text/javascript">
     @auth
-        
-        window.User = {!! json_encode(Auth::user(), true) !!};
-    @else
-        window.Permissions = [];
-        window.User =[];
-        window.Roles = [];
-    @endauth
+            window.Permissions = {!! json_encode(Auth::user()->allPermissions, true) !!};
+            window.Roles = {!! json_encode(Auth::user()->getRoleNames(), true) !!};
+            window.User = {!! json_encode(Auth::user(), true) !!};
+        @else
+            window.Permissions = [];
+            window.User =[];
+            window.Roles = [];
+        @endauth
 </script>
 </html>

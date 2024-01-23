@@ -16,30 +16,17 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $permissions = [
-            'roles-index',
-            'roles-create',
-            'roles-edit',
-            'roles-update',
-            'roles-destroy',
-            'users-index',
-            'users-create',
-            'users-update',
-            'users-edit',
-            'users-destroy',
-            'home-index',
-        ];
 
 
-        foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
-        }
+        // foreach ($permissions as $permission) {
+        //     Permission::create(['name' => $permission]);
+        // }
 
-        $role = Role::create(['name' => 'Admin']);
+        // $role = Role::create(['name' => 'Admin']);
 
-        $permissions = Permission::pluck('id', 'id')->all();
+        // $permissions = Permission::pluck('id', 'id')->all();
 
-        $role->syncPermissions($permissions);
+        // $role->syncPermissions($permissions);
 
         $user =  User::create([
             'name' => 'Administrador',
@@ -47,6 +34,6 @@ class UserSeeder extends Seeder
             'password' => bcrypt('123456'),
         ]);
 
-        $user->assignRole($role->name);
+        $user->assignRole("Admin");
     }
 }

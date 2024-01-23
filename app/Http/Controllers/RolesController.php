@@ -6,14 +6,15 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-
+use Auth;
 class RolesController extends Controller
 {
+    use PermissionGeneratorController;
     
-    public function __construct(PermissionGeneratorController $permissaoController)
+    public function __construct()
     {
+      
         $this->middleware(['auth','verified']);
-        $this->permissaoController = $permissaoController;
         $this->middleware('permission:roles-|index-create|roles-edit|roles-delete', ['only' => ['index', 'store']]);
         $this->middleware('permission:roles-create', ['only' => ['create', 'store']]);
         $this->middleware('permission:roles-edit', ['only' => ['edit', 'update']]);
@@ -28,11 +29,15 @@ class RolesController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
+    
     {
-        $roles = Role::orderBy('id', 'DESC')->get();
-        $this->permissaoController->synchronizelPermission();
-        return response()->json($roles);
-
+        $data = Role::orderBy('id', 'DESC')->get();
+        if( $request->wantsJson()){
+            return $data;
+        }
+        
+       
+        return Inertia::render('roles/index',compact('data'));
     }
 
     /**
@@ -42,12 +47,18 @@ class RolesController extends Controller
 
      * @return \Illuminate\Http\Response
      */
+    
+
     public function create(Request $request)
     {
-
-        $permission = Permission::get();
-
-        return $permission;
+        $permission = [];
+        $this->synchronizelPermission();
+        if(Auth::user()->hasRole('landlord')){
+            $permission = Permission::get();
+        }else{
+            $permission = Permission::where('guard_name','web')->get();
+        }
+        return response()->json($permission);
     }
 
     /**
@@ -59,17 +70,18 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-
         $validator = \Validator::make($request->all(), [
             'name' => 'required|unique:roles,name',
             'permission' => 'required',
+            'guard_name' => 'required',
+
         ]);
 
     if ($validator->fails()) {
         return response()->json(['errors' => $validator->errors()->all()],500);
     }
 
-        $role = Role::create(['name' => $request->input('name')]);
+        $role = Role::create(['name' => $request->input('name'),'name' => $request->input('name')]);
 
         $role->syncPermissions($request->input('permission'));
 
@@ -111,16 +123,16 @@ class RolesController extends Controller
      */
     public function edit($id, Request $request)
     {
-        //  if ($request->get('sincronizar') === 'all') {
-        //      if($this->permissaoController->synchronizelPermission()){
-        //         return redirect()->route('roles.edit',[$id])->with('success', 'Permissões atualizadoas com sucesso!');
-        //      }else{
-        //         return redirect()->route('roles.edit',[$id])->with('error', 'Permissões não atualizadoas');
-        //      }
-        // }
+         if ($request->get('sincronizar') === 'all') {
+             if($this->synchronizelPermission()){
+                return redirect()->route('roles.edit',[$id])->with('success', 'Permissões atualizadoas com sucesso!');
+             }else{
+                return redirect()->route('roles.edit',[$id])->with('error', 'Permissões não atualizadoas');
+             }
+        }
 
         $role = Role::find($id);
-        $this->permissaoController->synchronizelPermission();
+        $this->synchronizelPermission();
         $permission = Permission::get();
 
         $rolePermissions = DB::table('role_has_permissions')->where('role_has_permissions.role_id', $id)
@@ -153,6 +165,8 @@ class RolesController extends Controller
 
         $role->name = $request->input('name');
 
+        $role->guard_name = $request->input('guard_name');
+        
         $role->save();
 
         $role->syncPermissions($request->input('permission'));
