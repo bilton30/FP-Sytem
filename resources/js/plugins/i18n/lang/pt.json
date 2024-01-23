@@ -1,4 +1,19 @@
 {
     "Please wait": "Por favor, aguarde...",
-    "create Roles": "Criar Funções"
+    "Role Name": "Nome da Função",
+    "name": "nome",
+    "Nuit": "Nuit",
+    "Guard Name": "Nome do Tipo de Aplicativo",
+    "Please type role name": "Por favor, insira o nome do tipo de aplicativo.",
+    "Please type guard name : api ou web": "Por favor, Insira guard name : api ou web.",
+    "create Roles": "Criar Funções",
+    "Please correct the following error(s)": "Por favor, corrija o(s) seguinte(s) erro(s):",
+    "Enter the identification details for all branches or subsidiaries": "Insira os detalhes de identificação de todas as filiais ou subsidiárias.",
+    "Permissions": "Permissões",
+    "Indicates required field": "Indica campo obrigatório",
+    "Show Roles": "Exibir Funções",
+    "New Role": "Nova Função",
+    "Roles": "Funções",
+    "Name": "nome",
+    "Action": "Acções"
 }

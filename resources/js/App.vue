@@ -20,7 +20,7 @@
   
           <q-toolbar-title v-if="$q.screen.gt.xs" shrink class="row items-center no-wrap">
             <!--          <img src="https://cdn.quasar.dev/img/layout-gallery/logo-google.svg">-->
-            Tsenane 
+            Polegar 
           </q-toolbar-title>
   
           <q-space/>

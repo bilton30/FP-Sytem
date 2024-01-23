@@ -149,10 +149,9 @@
                             </figure>
 
                             <div class="fieldset-content" v-if="form.branch.length == form.branchNumber">
-                                <label class="form-label">Enter the identification details for all branches or
-                                    subsidiaries.</label>
+                                <label class="form-label">{{$t("Enter the identification details for all branches or subsidiaries")}}</label>
                                 <div class="alert alert-danger" v-if="errors.length" role="alert">
-                                    <b>Please correct the following error(s):</b>
+                                    <b>{{ $t("Please correct the following error(s)") }}</b>
                                     <ul class="alert-ul">
                                         <li v-for="error in errors" key="error">{{ replacePoints(error) }}</li>
                                     </ul>
