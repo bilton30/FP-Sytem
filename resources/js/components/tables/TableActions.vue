@@ -3,7 +3,7 @@
     <q-card-section>
        <div class="text-h6 text-grey-8" v-if="tableName">
          {{tableName}}  
-        <q-btn :label="buttonName" color="blue" @click="emitAction('create')" v-if="buttonName" class="float-right text-capitalize  shadow-3" icon="add"/>
+        <q-btn :label="buttonName"  color="blue" @click="emitAction('create')" v-if="buttonName" class="float-right text-capitalize  shadow-3" icon="add"/>
       </div>
     </q-card-section>
     <q-separator></q-separator>
@@ -33,7 +33,7 @@
           <q-td :props="props" >
             <div style="display: flex; padding:  1%;">
               <div v-for="item in props.row.button " :key="item" >
-                <q-btn :icon="item.icon" size="sm"  :color="item.color" @click="emitAction(item.action)"  flat dense/>
+                <q-btn :icon="item.icon" size="sm"  :color="item.color" @click="emitAction(item.action,props.row)" :v-can="item.permission" flat dense/>
               </div>
             </div>
             <!-- <q-btn icon="delete" size="sm" class="q-ml-sm" flat dense/> -->
@@ -101,8 +101,8 @@ export default defineComponent({
       }
     },
     methods: {
-      emitAction(action){
-        this.$emit('action', action);
+      emitAction(action,item=null){
+        this.$emit('action', action,item);
       },
       format(value){
         return formattedPricePrefix(value)

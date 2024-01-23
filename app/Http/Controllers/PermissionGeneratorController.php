@@ -18,7 +18,15 @@ trait PermissionGeneratorController
             'ResolverController',
             'createTenent',
             'migrateTenet',
-            'createDatabaseTenant'
+            'createDatabaseTenant',
+            'setup'
+        ];
+        public $ignore_method = [
+           'synchronizelpermission',
+           'classlist',
+           'allpermission',
+           ''
+
         ];
 
     public function synchronizelPermission()
@@ -87,19 +95,23 @@ trait PermissionGeneratorController
                         'get_this_class_methods' != $method_name &&
                         substr($method_name, 0, 3) != "___" // Para egnorar methods que iniciam cm ___
                     ) {
-                        $class_name = str_replace('Controller', '', $class);
-                        // echo $class_name . '-' . $method_name . "\n";
-                        $permission_name = str_replace('Controller', '', $class_name . '-' . $method_name);
-                        $permission_name = str_replace('\\', '-', $permission_name);
-                        // dd($permission_name);
-                        $guard_name = str_starts_with(Str::lower($permission_name), 'api') ? 'api' : 'web';
-                        if (!Permission::where('name', $permission_name)->first()) {
-                            $permission = Permission::create([
-                                'name' => Str::lower($permission_name),
-                                'guard_name' =>$guard_name,
-                            ]);
-                            if ($permission) {
-                                $status = true;
+                        if (
+                            !in_array($method_name, $this->ignore_method)
+                        ) {
+                            $class_name = str_replace('Controller', '', $class);
+                            // echo $class_name . '-' . $method_name . "\n";
+                            $permission_name = str_replace('Controller', '', $class_name . '-' . $method_name);
+                            $permission_name = str_replace('\\', '-', $permission_name);
+                            // dd($permission_name);
+                            $guard_name = str_starts_with(Str::lower($permission_name), 'api') ? 'api' : 'web';
+                            if (!Permission::where('name', $permission_name)->first()) {
+                                $permission = Permission::create([
+                                    'name' => Str::lower($permission_name),
+                                    'guard_name' =>$guard_name,
+                                ]);
+                                if ($permission) {
+                                    $status = true;
+                                }
                             }
                         }
                     }

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Permission;
 use App\Models\Traits\MultitenancyConnection;
+use Auth;
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasRoles, HasApiTokens,HasUuids,HasFactory,MultitenancyConnection, Notifiable;

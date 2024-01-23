@@ -432,9 +432,6 @@ export default defineComponent({
                 .post("/setup/wizard", formData)
                 .then(({ data: result }) => {
                     if (result.success) {
-                        // alert("ok");
-                        // this.$refs.dialogRef.show()
-
                         this.$q.dialog({
                             title: 'Success',
                             message: '' + result.message,

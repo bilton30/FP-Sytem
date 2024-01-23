@@ -52,12 +52,15 @@ Auth::routes();
 
 /*multitenancy routes*/
  Route::get('/home', [HomeController::class, 'index'])->middleware('auth');
+Route::post('custom-update', [App\Http\Controllers\UserController::class,'customUpdate'])->name('custom-update')->middleware('auth');
+Route::resource('users', App\Http\Controllers\UserController::class);
+Route::resource('roles', App\Http\Controllers\RolesController::class);
 
 Route::middleware(['auth'])->group(function() {
    
 // Route::get('/setup/wizard', [App\Http\Controllers\CompanyController::class, 'index'])->name('setup.wizard');
 Route::get('/setup/wizard', [App\Http\Controllers\SetupController::class, 'index'])->name('setup.wizard');
-Route::post('/setup/wizard', [App\Http\Controllers\SetupController::class, 'store'])->name('setup.wizard');
+Route::post('/setup/wizard', [App\Http\Controllers\RolesController::class, 'store'])->name('setup.wizard');
 
 // Route::post('/company/setup', [App\Http\Controllers\CampanyController::class, 'store'])->name('company.setup');
 Route::resource('company', App\Http\Controllers\CompanyController::class);
@@ -73,14 +76,12 @@ Route::middleware(['tenant'])->group(function() {
 //   ]);
     // Route::get('/profile', [HomeController::class, 'index']);
 
-Route::post('custom-update', [App\Http\Controllers\UserController::class,'customUpdate'])->name('custom-update');
 
 Route::get('/transactions', [App\Http\Controllers\HomeController::class, 'transactions'])->name('transactions');
 
 Route::get('/cashir', [App\Http\Controllers\HomeController::class, 'cashier'])->name('cashier');
 
 
-Route::resource('users', App\Http\Controllers\UserController::class);
 
 
 // Route::resource('address_districts', App\Http\Controllers\address_districtController::class);

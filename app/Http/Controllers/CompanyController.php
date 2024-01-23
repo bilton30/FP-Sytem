@@ -19,6 +19,10 @@ class CompanyController extends AppBaseController
     public function __construct(SetupController $setupController){
 
         $this->setupController = $setupController;
+        // $this->middleware('permission:roles-|index-create|roles-edit|roles-delete', ['only' => ['index', 'store']]);
+        // $this->middleware('permission:roles-create', ['only' => ['create', 'store']]);
+        // $this->middleware('permission:roles-edit', ['only' => ['edit', 'update']]);
+        // $this->middleware('permission:roles-destroy', ['only' => ['destroy']]);
     }
     public function index()
     {

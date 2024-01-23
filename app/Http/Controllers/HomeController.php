@@ -33,7 +33,7 @@ class HomeController extends Controller
     public function index(){
              
         $user = Auth::user();
-        if($user->hasAnyRole(['Company','Admin'])){
+        if($user->hasAnyRole(['Company','landlord'])){
             if($user->hasRole('Company')){
                   $data = [];
 
