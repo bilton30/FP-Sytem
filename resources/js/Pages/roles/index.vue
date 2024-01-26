@@ -3,14 +3,14 @@
     <q-page class="q-pa-sm">
       <!-- <p v-can="'role-index'" style="color: brown;">Este parágrafo só será exibido se o usuário tiver permissão de leitura</p> -->
       <table-actions :data="roles" :columns="table.columns" @action="performAction" :tableName="$t('Roles')"
-        buttonName="New Role" class="q-mt-lg  border"></table-actions>
+        buttonName="New Role"  permission="roles-create" class="q-mt-lg  border"></table-actions>
       <q-dialog ref="dialog" @hide="close('dialog')">
         <q-card class="q-dialog-plugin" style="width: 500px; max-width: 80vw;" ref="dialogContainer">
           <!--content-->
           <div class="col-lg-8 col-md-8 col-xs-12 col-sm-12">
             <q-card class="card-bg text-white no-shadow" bordered>
               <q-card-section class="text-h6 ">
-                <div class="text-h6">{{ $t("create Roles") }}</div>
+                <div class="text-h6">{{ $t("Create Roles") }}</div>
                 <!-- <div class="text-subtitle2">Complete profile</div> -->
               </q-card-section>
               <q-card-section class="q-pa-sm">
@@ -33,8 +33,6 @@
                       <q-select fill v-model="editedItem.guard_name" :options="guard_name" :label="`${$t('Guard Name')}
                         *`" @update:model-value="selectGuard(editedItem.guard_name)"
                         :rules="[val => val && val.length > 0 || $t('Please type guard name : api ou web')]" />
-                      <!-- <q-input dark color="white" dense v-model="editedItem.guard_name"  label="Guard Name *" value="web"
-                        :rules="[val => val && val.length > 0 || 'Please type guard name : api ou web']" /> -->
                     </q-item-section>
                   </q-item>
                   <q-item class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -141,8 +139,8 @@
 <script>
 import app from '../../App.vue'
 import { defineComponent, defineAsyncComponent } from 'vue'
-import { replacePoints } from '../../services/helper.js'
-import { scroll } from 'quasar'
+import { replacePoints, prepareForm } from '../../services/helper.js'
+
 import axios from "axios";
 
 export default defineComponent({
@@ -293,7 +291,7 @@ export default defineComponent({
       this.$refs.dialog.show()
     },
     editConfirm() {
-      let formData = this.prepareForm(this.editedItem, 'patch')
+      let formData = prepareForm(this.editedItem, 'patch')
       this.loading = true;
       axios
         .post("/roles/" + this.editedItem.id, formData, {})
@@ -308,15 +306,21 @@ export default defineComponent({
         })
         .catch((error) => {
           this.loading = false;
-          this.close('dialog');
-          this.$q.dialog({
-            title: 'Error',
-            message: '' + error.response.data.message,
-          })
+          if (error.response.data.errors === undefined) {
+            this.close('dialog');
+            this.$q.dialog({
+              title: "Erro!",
+              text: "" + error.response.data.message,
+              icon: "error"
+            });
+          } else {
+            window.scrollTo(0, 0);
+            this.errors = error.response.data.errors
+          }
         });
     },
     createConfirm() {
-      let formData = this.prepareForm(this.editedItem)
+      let formData = prepareForm(this.editedItem)
       this.loading = true;
       axios
         .post("/roles", formData, {})
@@ -405,26 +409,7 @@ export default defineComponent({
         });
 
     },
-    prepareForm(form, method = 'POST') {
-      const formData = new FormData();
-      for (const key in form) {
-        if (typeof form[key] === 'object') {
-          for (let i = 0; i < form[key].length; i++) {
-            // formData.append(`${key}[${i}]`, form[key][i]);
-            if (typeof form[key][i] !== 'object') {
-              formData.append(`${key}[${i}]`, form[key][i]);
-            }
-            for (const subKey in form[key][i]) {
-              formData.append(`${key}[${i}][${subKey}]`, form[key][i][subKey]);
-            }
-          }
-        } else {
-          formData.append(key, form[key]);
-        }
-      }
-      formData.append("_method", method);
-      return formData
-    },
+
     close(dialogRef) {
       this.$refs[dialogRef].hide();
 
@@ -436,7 +421,7 @@ export default defineComponent({
 
     save() {
       if (this.editedIndex > -1) {
-      
+
         this.editConfirm()
         Object.assign(this.roles[this.editedIndex], this.editedItem);
       } else {

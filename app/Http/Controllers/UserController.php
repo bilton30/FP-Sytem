@@ -21,12 +21,18 @@ class UserController extends Controller
       public function __construct()
     {
         $this->middleware(['auth','verified']);
+        $this->middleware('permission:user-|index-create|user-edit|user-delete', ['only' => ['index', 'store']]);
+        $this->middleware('permission:user-create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:user-edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:user-destroy', ['only' => ['destroy']]);
     }
 
     public function index(Request $request)
     {
          $data = User::with("roles")->orderBy('name', 'DESC')->get();
-
+         if( $request->wantsJson()){
+            return $data;
+        }
         return Inertia::render('users/index',compact("data"));
     }
 
@@ -38,7 +44,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name', 'name')->all();
+        $roles = Role::select('name', 'id')->get();
         return response()->json($roles);
     }
 
@@ -60,21 +66,20 @@ class UserController extends Controller
             'roles' => 'required'
         ]);
 
-    if ($validator->fails()) {
-        return response()->json(['errors' => $validator->errors()->all()],501);
-    }
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()->all()],501);
+        }
 
-    $input = $request->all();
-    $input['password'] = Hash::make($input['password']);
-    $user = User::create($input);
-    $user->assignRole($request->input('roles'));
-
+        $input = $request->all();
+        $input['password'] = Hash::make($input['password']);
+        $user = User::create($input);
+         $user->assignRole($request->input('roles'));
 
         DB::commit();
         return response()->json(['message' => 'Usuário criado com sucesso!']);
     } catch (\Exception $ex) {
         DB::rollback();
-        return response()->json(['message' => 'Impossivel criar Usuario!'], 501);
+        return response()->json(['message' => 'Impossivel criar Utilizador!'], 501);
     }
     }
 
@@ -87,8 +92,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        // $user = User::find($id);
-        // return view('users.show',compact('user'));
+        $user = User::find($id);
+        return $user;
+        
     }
 
 
@@ -99,10 +105,14 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
-    {
-        $user = User::find($id);
-        // $roles = Role::pluck('name','id')->all();
-        return $userRole = $user->roles;
+    {   
+        $user = User::with('roles')->find($id);
+        if(!$user){
+            return response()->json(['message' => 'user not found!'],501);
+        }
+        return  $user;
+       
+  
     }
 
 
@@ -114,7 +124,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    { 
         DB::beginTransaction();
 
         try{
@@ -139,16 +149,13 @@ class UserController extends Controller
 
             $user = User::find($id);
             $user->update($input);
-            DB::table('model_has_roles')->where('model_id', $id)->delete();
 
-
-            $user->assignRole($request->input('roles'));
-
+            $user->syncRoles($request->get('roles'));
             DB::commit();
-            return response()->json(['message' => 'Usuário atualizado com sucesso!']);
+            return response()->json(['message' => 'Usuário actualizado com sucesso!']);
             } catch (\Exception $ex) {
                 DB::rollback();
-                return response()->json(['message' => 'Impossivel atualizar Usuario!'], 501);
+                return response()->json(['message' => 'Impossivel actualizar Utilizador!','error'=>$ex], 501);
             }
         }
    
@@ -161,7 +168,15 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
+        try {
+            User::find($id)->delete();
+            return response()->json(['message'=>'Utilizador elimidado com sucesso!']);
+        } catch (\Exception $ex) {
+            return response()->json(['message' => 'Impossivel eliminar Utilizador!'], 501);
+
+        }
+     
+       
     }
 
     function customUpdate(Request $request)

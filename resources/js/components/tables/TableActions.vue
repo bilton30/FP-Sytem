@@ -4,7 +4,7 @@
       <div class="text-h6 text-grey-8" v-if="tableName">
         {{ tableName }}
         <q-btn :label="$t(buttonName)" color="blue" @click="emitAction('create')" v-if="(buttonName)"
-          class="float-right text-capitalize  shadow-3" icon="add" />
+          class="float-right text-capitalize  shadow-3" icon="add" v-can="permission" />
       </div>
     </q-card-section>
     <q-separator></q-separator>
@@ -107,6 +107,7 @@ export default defineComponent({
     columns: Object,
     tableName: String,
     buttonName: String,
+    permission: String,
 
   },
   data() {
