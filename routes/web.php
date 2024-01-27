@@ -14,6 +14,10 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/exemplo', function ($id, $nome) {
+    $database = env('DB_DATABASE');
+    return $database;
+})->name('exemplo');
 
  Route::get('/', function () {
         if(Auth::check()) {
@@ -48,7 +52,7 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.resend');
 
-Auth::routes();
+// Auth::routes();
 
 /*multitenancy routes*/
  Route::get('/home', [HomeController::class, 'index'])->middleware('auth');
