@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('sms_balance')->nullable();
             $table->jsonb('physical_location')->nullable();
             $table->timestamps();
-            $table->foreignUuid('company_id')->references('id')->on('Companies')->onDelete('cascade');
+            $table->foreignUuid('company_id')->references('id')->on('companies')->onDelete('cascade');
             
         });
     }

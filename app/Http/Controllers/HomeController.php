@@ -41,11 +41,16 @@ class HomeController extends Controller
         $sumProductPayments = 0;
         $sumWaterPayments = 0;
         return Inertia::render('home',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));
-            }         
+            }else {
+                      $data = [];
+
+        $sumServicePayments = 0;
+        $sumProductPayments = 0;
+        $sumWaterPayments = 0;
+        return Inertia::render('home',compact([ 'data','sumServicePayments','sumProductPayments','sumWaterPayments']));
+            }       
     }else{
       
-
-  
         return redirect()->route('setup.wizard');
       }
 

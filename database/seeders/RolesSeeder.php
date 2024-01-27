@@ -19,10 +19,12 @@ class RolesSeeder extends Seeder
     {
         $this->synchronizelPermission();
 
-        $role = Role::create(['name' => 'Admin']);
-
         $role = Role::create(['name' => 'Company']);
 
+        $role = Role::create(['name' => 'landlord']);
+
+        
+  
         $permissions = Permission::where('guard_name', 'web')->get();
          
         $role->syncPermissions($permissions);

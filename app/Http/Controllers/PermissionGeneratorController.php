@@ -41,7 +41,7 @@ trait PermissionGeneratorController
     public function classList()
     {
         // $path = __DIR__;
-        $path = app_path('Http\Controllers');
+        $path = app_path('Http' . DIRECTORY_SEPARATOR . 'Controllers');
         $fqcns = array();
 
         $allFiles = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
