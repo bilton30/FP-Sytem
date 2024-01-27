@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/exemplo', function ($id, $nome) {
+Route::get('/exemplo', function () {
     $database = env('DB_DATABASE');
     return $database;
 })->name('exemplo');
