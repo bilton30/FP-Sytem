@@ -59,7 +59,7 @@ Route::middleware(['auth'])->group(function() {
    
 // Route::get('/setup/wizard', [App\Http\Controllers\CompanyController::class, 'index'])->name('setup.wizard');
 Route::get('/setup/wizard', [App\Http\Controllers\SetupController::class, 'index'])->name('setup.wizard');
-Route::post('/setup/wizard', [App\Http\Controllers\RolesController::class, 'store'])->name('setup.wizard');
+Route::post('/setup/wizard', [App\Http\Controllers\SetupController::class, 'store'])->name('setup.wizard');
 
 // Route::post('/company/setup', [App\Http\Controllers\CampanyController::class, 'store'])->name('company.setup');
 Route::resource('company', App\Http\Controllers\CompanyController::class);
