@@ -1,224 +1,221 @@
 // Variables
-@import 'variables';
+@import "variables";
 
 // Bootstrap
 // @import '~admin-lte/build/scss/adminlte';
-@import '~bootstrap/scss/bootstrap';
+// @import '~bootstrap/scss/bootstrap';
+@import "node_modules/bootstrap/scss/bootstrap";
 
-.card{
-  border-radius: 1rem !important ;
+.card {
+    border-radius: 1rem !important ;
 }
 .login-page,
 .register-page {
-  align-items: center;
-  background-color: $gray-200;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  justify-content: center;
+    align-items: center;
+    background-color: $gray-200;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
 }
 form {
-  width: 50%;
-  padding: 35px 30px;
-  background: #fefefe;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 20px;
+    width: 50%;
+    padding: 35px 30px;
+    background: #fefefe;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
 }
 h4 {
-  font-size: 20px;
-  font-weight: 600;
-  // color: #121212;
-  // opacity: .95;
+    font-size: 20px;
+    font-weight: 600;
+    // color: #121212;
+    // opacity: .95;
 }
 .form {
+    overflow-y: auto;
+    overflow-x: hidden;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // flex: 1;
+    float: right;
+    width: 50%;
 
-  overflow-y: auto;
-  overflow-x: hidden;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  // flex: 1;
-  float: right;
-  width: 50%;
-
-  form {
-      width: 100%;
-      max-width: 368px;
-  }
+    form {
+        width: 100%;
+        max-width: 368px;
+    }
 }
 .left {
-  // transform: translateY(10%);
-  top:1.2vw;
-  width: 45%;
-  max-width: 458px;
-  left: 2vw;
-  height: 58vh;
-  overflow-x: hidden;
-  // position: fixed !important;
-  color: #851b1b;
-  text-align: center;
-  position: absolute !important;
-  background: linear-gradient(180deg, rgba(162, 174, 192, 0.137), rgba(200, 219, 248, 0.178));
-  // background-image: linear-gradient(180deg, rgba(162, 174, 192, 0.83), rgba(200, 219, 248, 0.83)), url(/images/login_v1_4.png);
-  background-size: cover;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  border-radius:100% ;
-  overflow: visible;
-  height: auto; /* Mantém a proporção da imagem */
-  // max-height: 100%; /* Limita a altura da imagem à altura do elemento pai */
-  // object-fit: contain; /* 
-  
+    // transform: translateY(10%);
+    top: 1.2vw;
+    width: 45%;
+    max-width: 458px;
+    left: 2vw;
+    height: 58vh;
+    overflow-x: hidden;
+    // position: fixed !important;
+    color: #851b1b;
+    text-align: center;
+    position: absolute !important;
+    background: linear-gradient(
+        180deg,
+        rgba(162, 174, 192, 0.137),
+        rgba(200, 219, 248, 0.178)
+    );
+    // background-image: linear-gradient(180deg, rgba(162, 174, 192, 0.83), rgba(200, 219, 248, 0.83)), url(/images/login_v1_4.png);
+    background-size: cover;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-radius: 100%;
+    overflow: visible;
+    height: auto; /* Mantém a proporção da imagem */
+    // max-height: 100%; /* Limita a altura da imagem à altura do elemento pai */
+    // object-fit: contain; /*
 }
 .footer {
-  a {
-      color: #aaa8a8 !important;
-  }
+    a {
+        color: #aaa8a8 !important;
+    }
 
-  position: absolute;
-  top:93%;
-  left: -35%;
-  // bottom: 24px;
-  text-align: center;
-  width: 100%;
-  object-fit: cover;
-
+    position: absolute;
+    top: 93%;
+    left: -35%;
+    // bottom: 24px;
+    text-align: center;
+    width: 100%;
+    object-fit: cover;
 }
 .left img {
-  
-  z-index: 1; /* Coloca a imagem atrás da div */
-  object-fit: cover;
+    z-index: 1; /* Coloca a imagem atrás da div */
+    object-fit: cover;
 }
 img {
-  max-width: 100%; /* Garante que a imagem não exceda o tamanho da div */
-  max-height: 100%; /* Garante que a imagem não exceda a altura da div */
- 
+    max-width: 100%; /* Garante que a imagem não exceda o tamanho da div */
+    max-height: 100%; /* Garante que a imagem não exceda a altura da div */
 }
 button {
-  -webkit-appearance: none;
-  width: auto;
-  min-width: 100px;
-  width: 100%;
-  border-radius: 0.6rem !important;
-  text-align: center;
-  padding: 8px 40px;
-  margin-top: 5px;
-  background-color: #b73dba;
-  color: #fff;
-  font-size: 14px;
-  margin-left: auto;
-  font-weight: 500;
-  box-shadow: 0px 2px 6px -1px rgba(0, 0, 0, .13);
-  border: none;
-  transition: all .3s ease;
-  outline: 0;
+    -webkit-appearance: none;
+    width: auto;
+    min-width: 100px;
+    width: 100%;
+    border-radius: 0.6rem !important;
+    text-align: center;
+    padding: 8px 40px;
+    margin-top: 5px;
+    background-color: #b73dba;
+    color: #fff;
+    font-size: 14px;
+    margin-left: auto;
+    font-weight: 500;
+    box-shadow: 0px 2px 6px -1px rgba(0, 0, 0, 0.13);
+    border: none;
+    transition: all 0.3s ease;
+    outline: 0;
 
-  &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 2px 6px -1px rgba($primary, .65);
+    &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 2px 6px -1px rgba($primary, 0.65);
 
-      &:active {
-          transform: scale(.99);
-      }
-  }
+        &:active {
+            transform: scale(0.99);
+        }
+    }
 }
-.login-card-body{
+.login-card-body {
     // padding: 20px;
     // width: 50px;
 
-    height:auto !important;
+    height: auto !important;
 }
 .login-box,
 .register-box {
-  // width: 960px;
+    // width: 960px;
 
-  @media (max-width: map-get($grid-breakpoints, sm)) {
-    margin-top: .5rem;
-    width: 80%;
-  }
+    @media (max-width: map-get($grid-breakpoints, sm)) {
+        margin-top: 0.5rem;
+        width: 80%;
+    }
 
-  .card {
-    margin-bottom: 0;
-  }
+    .card {
+        margin-bottom: 0;
+    }
 }
 
 .login-card-body,
 .register-card-body {
-  background-color: $white;
-  border-top: 0;
-  color: #666;
+    background-color: $white;
+    border-top: 0;
+    color: #666;
 
+    .input-group {
+        .form-control {
+            border-right: 0;
 
-  .input-group {
-    .form-control {
-      border-right: 0;
+            &:focus {
+                box-shadow: none;
 
-      &:focus {
-        box-shadow: none;
+                ~ .input-group-prepend .input-group-text,
+                ~ .input-group-append .input-group-text {
+                    border-color: $input-focus-border-color;
+                }
+            }
 
-        ~ .input-group-prepend .input-group-text,
-        ~ .input-group-append .input-group-text {
-          border-color: $input-focus-border-color;
+            &.is-valid {
+                &:focus {
+                    box-shadow: none;
+                }
+
+                ~ .input-group-prepend .input-group-text,
+                ~ .input-group-append .input-group-text {
+                    border-color: $success;
+                }
+            }
+
+            &.is-invalid {
+                &:focus {
+                    box-shadow: none;
+                }
+
+                ~ .input-group-append .input-group-text {
+                    border-color: $danger;
+                }
+            }
         }
-      }
 
-      &.is-valid {
-        &:focus {
-          box-shadow: none;
+        .input-group-text {
+            background-color: transparent;
+            border-bottom-right-radius: $border-radius;
+            border-left: 0;
+            border-top-right-radius: $border-radius;
+            color: #777;
+            transition: $input-transition;
         }
-
-        ~ .input-group-prepend .input-group-text,
-        ~ .input-group-append .input-group-text {
-          border-color: $success;
-        }
-      }
-
-      &.is-invalid {
-        &:focus {
-          box-shadow: none;
-        }
-
-        ~ .input-group-append .input-group-text {
-          border-color: $danger;
-        }
-      }
     }
-
-    .input-group-text {
-      background-color: transparent;
-      border-bottom-right-radius: $border-radius;
-      border-left: 0;
-      border-top-right-radius: $border-radius;
-      color: #777;
-      transition: $input-transition;
-    }
-  }
 }
 @media (min-width: 1824px) {
-  .left {
-  top:0.8vw;
+    .left {
+        top: 0.8vw;
 
-    left: 4.5vw; /* Aumentar ainda mais para telas ainda maiores */
-  }
-  .footer {
-    margin-top: 5rem;
-    // position: relative;
-    top: 78%;
-    // left: -10vw;
-  }
-  .card {
-    max-width: 80%;
-    position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  }
+        left: 4.5vw; /* Aumentar ainda mais para telas ainda maiores */
+    }
+    .footer {
+        margin-top: 5rem;
+        // position: relative;
+        top: 78%;
+        // left: -10vw;
+    }
+    .card {
+        max-width: 80%;
+        position: relative;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
 }
-
-
 
 // .input-group {
 //   display: flex;
@@ -233,7 +230,7 @@ button {
 //   left: 10px;
 //   color: ced4da;
 //   background-color: rgba(255, 255, 255, 0.034);
-//   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%); 
+//   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
 //   padding: 0 4px;
 //   z-index: 1;
 //   font-size: 1rem;
@@ -247,12 +244,12 @@ button {
 //   box-sizing: border-box;
 // }
 
-.form-control  {
- border-radius: 0.6rem ;
+.form-control {
+    border-radius: 0.6rem;
 }
-.input-group-text{
-  border-radius: 10px;
-  border-bottom-right-radius: 0.6rem !important ; 
-  
-  border-top-right-radius: 0.6rem !important;
+.input-group-text {
+    border-radius: 10px;
+    border-bottom-right-radius: 0.6rem !important ;
+
+    border-top-right-radius: 0.6rem !important;
 }
