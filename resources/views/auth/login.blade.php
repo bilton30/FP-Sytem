@@ -92,6 +92,7 @@
                 <div class="input-group mb-3">
                     <button type="submit" class="">Sign In</button>
                 </div>
+                <a href="/register" class="signup-image-link">Don't have an account? Register</a>
             </form>
             </div>
     
